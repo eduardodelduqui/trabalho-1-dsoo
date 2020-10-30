@@ -1,6 +1,5 @@
-from entidade.usuario import Usuario
 
-class Cliente(Usuario):
+class Cliente:
     def __init__(self, nome: str, cpf: str):
         self.__nome = nome
         self.__cpf = cpf

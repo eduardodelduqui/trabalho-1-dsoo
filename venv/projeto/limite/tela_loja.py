@@ -15,20 +15,19 @@ class TelaLoja:
 
     def mostra_tela_opcoes(self):
         print("*-------------- Loja --------------")
-        print('Entrar como:')
         print('1 - Adicionar')
         print('2 - Remover')
         print('3 - Listar')
         print('0 - Encerrar')
-        opcao = self.verifica_numero_inteiro('Escolha a opção: ', [0, 1, 2])
+        opcao = self.verifica_numero_inteiro('Escolha a opção: ', [0, 1, 2, 3])
         return opcao
 
     def abre_tela_adicionar(self):
-        nome = input('Digite o nome do cliente: ')
-        cpf = input('Digite o cpf do cliente: ')
-        cliente = {
+        nome = input('Digite o nome da loja: ')
+        tipo = input('Digite a categoria da loja: ')
+        loja = {
             "nome": nome,
-            "cpf": cpf
+            "tipo": tipo
         }
-        return cliente
+        return loja
 

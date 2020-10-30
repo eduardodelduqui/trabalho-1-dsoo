@@ -5,7 +5,7 @@ from limite.tela_loja import TelaLoja
 class ControllerLoja:
     def __init__(self):
         self.__tela_loja = TelaLoja()
-        self.__lojas = []
+
 
 
     def inicializa(self):
@@ -13,16 +13,18 @@ class ControllerLoja:
         pass
 
     def adiciona_loja(self):
-        pass
-        # if isinstance(loja, Loja) and loja not in self.__lojas:
-        #     self.__lojas.append(loja)
+        loja = self.__tela_loja.abre_tela_adicionar()
+        self.__lojas.append(Loja(loja["nome"], loja["tipo"]))
+        print(len(self.__lojas))
 
     def remove_loja(self):
         pass
         # self.__lojas.remove(loja)
 
     def lista_loja(self):
-        return self.__lojas
+        print('Lojas')
+        for loja in self.__lojas:
+            print(f'Nome: {loja.nome}    Categoria: {loja.tipo}')
 
     def finalizar(self):
         exit(0)

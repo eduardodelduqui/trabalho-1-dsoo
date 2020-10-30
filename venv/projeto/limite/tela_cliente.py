@@ -16,7 +16,6 @@ class TelaCliente:
 
     def mostra_tela_opcoes(self):
         print("*-------------- Cliente --------------")
-        print('Entrar como:')
         print('1 - Adicionar')
         print('2 - Remover')
         print('3 - Listar')
@@ -32,4 +31,8 @@ class TelaCliente:
             "cpf": cpf
         }
         return cliente
+
+    def tela_remover(self):
+        return input('Digite o cpf do cliente a ser removido: ')
+
 

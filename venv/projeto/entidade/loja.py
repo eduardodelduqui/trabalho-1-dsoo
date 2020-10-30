@@ -2,9 +2,9 @@ from entidade.produto import Produto
 
 
 class Loja:
-    def __init__(self, nome: str):
+    def __init__(self, nome: str, tipo: str):
         self.__nome = nome
-        self.__tipo = None
+        self.__tipo = tipo
         self.__telefone = None
         self.__cnpj = None
         self.__id = None
