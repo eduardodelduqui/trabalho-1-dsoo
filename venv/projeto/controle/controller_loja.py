@@ -5,6 +5,7 @@ from limite.tela_loja import TelaLoja
 class ControllerLoja:
     def __init__(self):
         self.__tela_loja = TelaLoja()
+        self.__lojas = []
 
 
 
