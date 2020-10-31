@@ -34,5 +34,12 @@ class TelaPrato:
         }
         return prato
 
+    def imprime_lista_prato(self, pratos):
+        print('----------- Pratos -----------')
+        t = PrettyTable(['Nome', 'Tipo', 'Preço'])
+        for prato in pratos:
+            t.add_row([prato.nome, prato.tipo, 'R$ ' + prato.preco_unitario])
+        print(t)
+
 
 

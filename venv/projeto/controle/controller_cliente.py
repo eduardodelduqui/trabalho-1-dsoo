@@ -34,7 +34,8 @@ class ControllerCliente:
             print(f'Nome: {cliente.nome}    cpf: {cliente.cpf}')
 
     def lista_loja(self):
-        pass
+        self.__controle_principal.controller_prato.lista_prato()
+
 
 
 

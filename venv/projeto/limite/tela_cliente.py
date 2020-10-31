@@ -19,7 +19,7 @@ class TelaCliente:
         print('1 - Adicionar clientes')
         print('2 - Remover clientes')
         print('3 - Listar clientes')
-        print('4 - Listar lojas')
+        print('4 - Listar pratos')
         print('0 - Voltar')
         opcao = self.verifica_numero_inteiro('Escolha a opção: ', [0, 1, 2, 3, 4])
         return opcao

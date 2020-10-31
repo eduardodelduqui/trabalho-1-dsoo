@@ -22,7 +22,7 @@ class ControllerPrato:
         pass
 
     def lista_prato(self):
-        pass
+        self.__tela_prato.imprime_lista_prato(self.__pratos)
 
     def finalizar(self):
         self.__tela_aberta = False
