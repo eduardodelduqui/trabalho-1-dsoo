@@ -20,18 +20,16 @@ class ControllerCliente:
         print(cliente)
 
     def remove_cliente(self):
-        print('Remover cliente')
         self.lista_cliente()
-        cpfLoja = self.__tela_cliente.tela_remover()
-        for index, cliente in enumerate(self.__clientes):
-            if(cliente.cpf == cpfLoja):
-                self.__clientes.pop(index)
-        print('Cliente removido')
+        if self.__clientes:
+            cpfLoja = self.__tela_cliente.tela_remover()
+            for index, cliente in enumerate(self.__clientes):
+                if(cliente.cpf == cpfLoja):
+                    self.__clientes.pop(index)
+
 
     def lista_cliente(self):
-        print('Clientes')
-        for cliente in self.__clientes:
-            print(f'Nome: {cliente.nome}    cpf: {cliente.cpf}')
+        self.__tela_cliente.imprime_lista_cliente(self.__clientes)
 
     def lista_loja(self):
         self.__controle_principal.controller_prato.lista_prato()

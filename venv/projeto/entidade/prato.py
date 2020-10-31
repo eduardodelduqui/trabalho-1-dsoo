@@ -2,10 +2,12 @@ from entidade.produto import Produto
 
 
 class Prato:
+    __global_id = 0
     def __init__(self, nome: str, tipo: str, preco_unitario: float):
+        Prato.__global_id += 1
         self.__nome = nome
         self.__tipo = tipo
-        self.__id = None
+        self.__id = Prato.__global_id
         self.__preco_unitario = preco_unitario
 
     @property

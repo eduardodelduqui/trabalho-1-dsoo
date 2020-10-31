@@ -16,10 +16,11 @@ class TelaMain(Tela):
                 print('Valor inválido, valor precisa ser inteiro')
 
     def mostra_tela_opcoes(self):
-        print("*-------------- Aplicativo --------------")
+        print("-------------- Aplicativo --------------")
         print('Entrar como:')
         print('1 - Cliente')
         print('2 - Loja')
         print('0 - Encerrar')
         opcao = self.verifica_numero_inteiro('Escolha a opção: ', [0, 1, 2])
+        print(opcao)
         return opcao

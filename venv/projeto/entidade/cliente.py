@@ -1,9 +1,12 @@
 
 class Cliente:
+    __global_id = 0
     def __init__(self, nome: str, cpf: str):
+        Cliente.__global_id += 1
         self.__nome = nome
         self.__cpf = cpf
         self.__endereco = None
+        self.__id = Cliente.__global_id
 
     @property
     def nome(self):
@@ -16,6 +19,10 @@ class Cliente:
     @property
     def endereco(self):
         return self.__endereco
+
+    @property
+    def id(self):
+        return self.__id
 
     @nome.setter
     def nome(self, nome):

@@ -19,7 +19,12 @@ class ControllerPrato:
         self.__pratos.append(Prato(prato["nome"], prato["tipo"]))
 
     def remove_prato(self):
-        pass
+        self.lista_prato()
+        if self.__pratos:
+            id = self.__tela_prato.remove_prato()
+            for index, prato in enumerate(self.__pratos):
+                if prato.id == id:
+                    self.__pratos.pop(index)
 
     def lista_prato(self):
         self.__tela_prato.imprime_lista_prato(self.__pratos)
