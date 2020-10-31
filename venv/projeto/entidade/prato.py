@@ -1,7 +1,7 @@
 from entidade.produto import Produto
 
 
-class Loja:
+class Prato:
     def __init__(self, nome: str, tipo: str):
         self.__nome = nome
         self.__tipo = tipo

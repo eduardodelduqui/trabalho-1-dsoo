@@ -3,9 +3,11 @@ from limite.tela_cliente import TelaCliente
 
 
 class ControllerCliente:
-    def __init__(self):
+    def __init__(self, controlador):
         self.__tela_cliente = TelaCliente()
         self.__clientes = []
+        self.__controle_principal = controlador
+        self.__mantem_tela_aberta = True
 
 
     def inicializa(self):
@@ -31,17 +33,24 @@ class ControllerCliente:
         for cliente in self.__clientes:
             print(f'Nome: {cliente.nome}    cpf: {cliente.cpf}')
 
+    def lista_loja(self):
+        self.__controle_principal.controller_loja.lista_loja()
+
+
+
     def finalizar(self):
-        exit(0)
+        self.__mantem_tela_aberta = False
 
 
     def abre_tela_inicial(self):
+
         switcher = {0: self.finalizar,
                     1: self.adiciona_cliente,
                     2: self.remove_cliente,
-                    3: self.lista_cliente}
+                    3: self.lista_cliente,
+                    4: self.lista_loja}
 
-        while True:
+        while self.__mantem_tela_aberta:
             opcao = self.__tela_cliente.mostra_tela_opcoes()
             funcao_escolhida = switcher[opcao]
             funcao_escolhida()

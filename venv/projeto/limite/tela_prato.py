@@ -1,4 +1,4 @@
-class TelaLoja:
+class TelaPrato:
     def __init__(self):
         pass
 
@@ -15,19 +15,19 @@ class TelaLoja:
 
     def mostra_tela_opcoes(self):
         print("*-------------- Loja --------------")
-        print('1 - Adicionar')
-        print('2 - Remover')
-        print('3 - Listar')
-        print('0 - Encerrar')
+        print('1 - Adicionar prato')
+        print('2 - Remover prato')
+        print('3 - Listar pratos')
+        print('0 - Voltar')
         opcao = self.verifica_numero_inteiro('Escolha a opção: ', [0, 1, 2, 3])
         return opcao
 
     def abre_tela_adicionar(self):
-        nome = input('Digite o nome da loja: ')
-        tipo = input('Digite a categoria da loja: ')
-        loja = {
+        nome = input('Digite o nome da prato: ')
+        tipo = input('Digite a categoria da prato: ')
+        prato = {
             "nome": nome,
             "tipo": tipo
         }
-        return loja
+        return prato
 
