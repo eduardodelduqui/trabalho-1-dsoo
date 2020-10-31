@@ -21,7 +21,7 @@ class TelaPrato:
         print('\033[1;36m1\033[0m - Adicionar prato')
         print('\033[1;36m2\033[0m - Remover prato')
         print('\033[1;36m3\033[0m - Listar pratos')
-        print('\033[1;36m0\033[0m - Voltar')
+        print('\033[1;91m0\033[0m - Voltar')
         opcao = self.verifica_numero_inteiro('Escolha a opção: ', [0, 1, 2, 3])
         return opcao
 

@@ -19,12 +19,13 @@ class TelaCliente:
 
     def mostra_tela_opcoes(self):
         print("-------------- Cliente --------------")
-        print('\033[1;36m1\033[0m - Adicionar clientes')
-        print('\033[1;36m2\033[0m - Remover clientes')
-        print('\033[1;36m3\033[0m - Listar clientes')
-        print('\033[1;36m4\033[0m - Listar pratos')
+        print('\033[1;36m1\033[0m - Adicionar cliente')
+        print('\033[1;36m2\033[0m - Remover cliente')
+        print('\033[1;36m3\033[0m - Alterar cliente')
+        print('\033[1;36m4\033[0m - Listar clientes')
+        print('\033[1;36m5\033[0m - Listar pratos')
         print('\033[1;36m0\033[0m - Voltar')
-        opcao = self.verifica_numero_inteiro('Escolha a opção: ', [0, 1, 2, 3, 4])
+        opcao = self.verifica_numero_inteiro('Escolha a opção: ', [0, 1, 2, 3, 4, 5])
         return opcao
 
     def imprime_lista_cliente(self, clientes):
@@ -41,13 +42,35 @@ class TelaCliente:
     def opcoes_adicionar(self):
         nome = input('Digite o nome do cliente: ')
         cpf = input('Digite o cpf do cliente: ')
+        endereco = input('Digite o endereço: ')
+
         cliente = {
             "nome": nome,
-            "cpf": cpf
+            "cpf": cpf,
+            "endereco": endereco
         }
         return cliente
 
     def tela_remover(self):
         return input('Digite o cpf do cliente a ser removido: ')
+
+    def tela_alterar(self):
+        id = int(input('Digite o ID do cliente a ser alterado: '))
+        print('------ Alterar ------')
+        print('1 - Nome')
+        print('2 - CPF')
+        print('3 - Endereço')
+        print('0 - Voltar')
+        opcao = int(input('Digite a opção que deseja alterar: '))
+        valor = input('Alterar para: ')
+        return {
+            "id": id,
+            "opcao": opcao,
+            "valor": valor
+        }
+
+
+
+
 
 
