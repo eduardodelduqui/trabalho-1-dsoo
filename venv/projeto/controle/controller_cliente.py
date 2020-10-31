@@ -28,20 +28,16 @@ class ControllerCliente:
                     self.__clientes.pop(index)
 
     def altera_nome(self, id, valor):
-        print(id)
-        print(valor)
         for index, cliente in enumerate(self.__clientes):
-            print(cliente.id)
             if (cliente.id == id):
-                print("match")
                 cliente.nome = valor
 
-    def altera_cpf(self):
+    def altera_cpf(self, id, valor):
         for index, cliente in enumerate(self.__clientes):
             if cliente.id == id:
                 cliente.cpf = valor
 
-    def altera_endereco(self):
+    def altera_endereco(self, id, valor):
         for index, cliente in enumerate(self.__clientes):
             if cliente.id == id:
                 cliente.endereco = valor
