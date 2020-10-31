@@ -1,3 +1,6 @@
+from prettytable import PrettyTable
+
+
 class TelaPrato:
     def __init__(self):
         pass
@@ -30,4 +33,6 @@ class TelaPrato:
             "tipo": tipo
         }
         return prato
+
+
 
