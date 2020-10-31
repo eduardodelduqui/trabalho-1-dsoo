@@ -8,10 +8,17 @@ class ControllerPrato:
         self.__pratos = [Prato("Esfiha", "Lanches", 1.45), Prato("Kibe", "Lanches", 1.35)]
         self.__mantem_tela_aberta = True
 
-
+    @property
+    def pratos(self):
+        return self.__pratos
 
     def inicializa(self):
+        self.__mantem_tela_aberta = True
         self.abre_tela_inicial()
+
+    def finaliza(self):
+        self.__mantem_tela_aberta = False
+
 
     def adiciona_prato(self):
         prato = self.__tela_prato.abre_tela_adicionar()
@@ -19,36 +26,39 @@ class ControllerPrato:
 
     def remove_prato(self):
         self.lista_prato()
-        if self.__pratos:
+        if self.pratos:
             id = self.__tela_prato.remove_prato()
-            for index, prato in enumerate(self.__pratos):
+            for index, prato in enumerate(self.pratos):
                 if prato.id == id:
                     self.__pratos.pop(index)
 
     def altera_nome(self, id, valor):
-        for index, prato in enumerate(self.__pratos):
+        for prato in self.pratos:
             if (prato.id == id):
                 prato.nome = valor
 
     def altera_tipo(self, id, valor):
-        for index, prato in enumerate(self.__pratos):
+        for prato in self.pratos:
             if (prato.id == id):
                 prato.tipo = valor
 
     def altera_preco(self, id, valor):
-        for index, prato in enumerate(self.__pratos):
+        for prato in self.pratos:
             if (prato.id == id):
                 prato.preco_unitario = valor
 
     def lista_prato(self):
-        self.__tela_prato.imprime_lista_prato(self.__pratos)
+        self.__tela_prato.imprime_lista_prato(self.pratos)
 
-    def finalizar(self):
-        self.__mantem_tela_aberta = False
+    def busca_prato(self, id):
+        for prato in self.pratos:
+            if prato.id == id:
+                return prato
+
+
 
     def abre_tela_inicial(self):
-        self.__mantem_tela_aberta = True
-        switcher = {0: self.finalizar,
+        switcher = {0: self.finaliza,
                     1: self.adiciona_prato,
                     2: self.remove_prato,
                     3: self.abre_tela_altera,

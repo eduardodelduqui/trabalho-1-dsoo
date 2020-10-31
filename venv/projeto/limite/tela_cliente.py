@@ -23,9 +23,8 @@ class TelaCliente:
         print('\033[1;36m2\033[0m - Remover cliente')
         print('\033[1;36m3\033[0m - Alterar cliente')
         print('\033[1;36m4\033[0m - Listar clientes')
-        print('\033[1;36m5\033[0m - Listar pratos')
         print('\033[1;36m0\033[0m - Voltar')
-        opcao = self.verifica_numero_inteiro('Escolha a opção: ', [0, 1, 2, 3, 4, 5])
+        opcao = self.verifica_numero_inteiro('Escolha a opção: ', [0, 1, 2, 3, 4])
         return opcao
 
     def imprime_lista_cliente(self, clientes):

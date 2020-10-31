@@ -3,10 +3,9 @@ from limite.tela_cliente import TelaCliente
 
 
 class ControllerCliente:
-    def __init__(self, controlador):
+    def __init__(self):
         self.__tela_cliente = TelaCliente()
         self.__clientes = [Cliente('Eduardo', '100.100.100-10', 'Rua Douglas Seabra Levier')]
-        self.__controle_principal = controlador
         self.__mantem_tela_aberta = True
 
 
@@ -45,9 +44,6 @@ class ControllerCliente:
     def lista_cliente(self):
         self.__tela_cliente.imprime_lista_cliente(self.__clientes)
 
-    def lista_loja(self):
-        self.__controle_principal.controller_prato.lista_prato()
-
     def finalizar(self):
         self.__mantem_tela_aberta = False
 
@@ -57,8 +53,7 @@ class ControllerCliente:
                     1: self.adiciona_cliente,
                     2: self.remove_cliente,
                     3: self.abre_tela_altera,
-                    4: self.lista_cliente,
-                    5: self.lista_loja}
+                    4: self.lista_cliente}
 
         while self.__mantem_tela_aberta:
             opcao = self.__tela_cliente.mostra_tela_opcoes()
