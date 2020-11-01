@@ -7,12 +7,11 @@ import shortuuid
 
 
 class Pedido:
-
-    def __init__(self, cliente: Cliente):
+    def __init__(self, produto: Produto, qtd: int):
         self.__codigo = shortuuid.uuid()
-        self.__produtos = []
-        self.__cliente = cliente
-        self.__valor_total = None
+        self.__produtos = [{"item": produto, "qtd": qtd}]
+        self.__cliente = None
+        self.__valor_total = produto.preco_unitario*qtd
         self.__data = date.today()
         self.__horario = datetime.now().strftime("%H:%M:%S")
         self.__pago = False
@@ -46,16 +45,18 @@ class Pedido:
     def valor_total(self):
         return self.__valor_total
 
+    def adiciona_cliente(self, cliente: Cliente):
+        if isinstance(cliente, Cliente):
+            self.__cliente = cliente
+
     def adiciona_produto(self, produto: Prato, qtd: int = 1):
         compra = {"item": produto, "qtd": qtd}
         self.__produtos.append(compra)
         self.calcula_preco_total()
 
     def calcula_preco_total(self):
-        valor = self.__valor_inicial
         for produto in self.produtos:
-            valor += produto["item"].preco_unitario*produto["qtd"]
-        self.__valor_total = valor
+            self.__valor_total += produto["item"].preco_unitario*produto["qtd"]
 
     def efetua_pagamento(self):
         self.__pago = True

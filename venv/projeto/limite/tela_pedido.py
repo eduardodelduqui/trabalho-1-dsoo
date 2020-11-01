@@ -15,7 +15,6 @@ class TelaPedido:
             except:
                 print("Insira um valor inteiro")
 
-
     def pega_id_lista(self, pratos: list):
         lista = []
         for prato in pratos:
@@ -23,31 +22,31 @@ class TelaPedido:
         return lista
 
     def imprime_pedido(self, pedido):
-        cliente = pedido.cliente
         produtos = pedido.produtos
-        t_cliente = PrettyTable(['ID', 'Nome', 'CPF'])
-        t_cliente.add_row([cliente.id, cliente.nome, cliente.cpf])
-        t_cliente.border = False
-        t_produtos = PrettyTable(['ID', 'Produto', 'Qtd.', 'Preço unitário' ])
-        t_produtos.border = False
+        t_produtos = PrettyTable(['ID', 'Produto', 'Qtd.', 'Preço unitário' ], border=False)
         for produto in produtos:
             qtd = produto["qtd"]
             produto = produto["item"]
             t_produtos.add_row([produto.id, produto.nome, qtd, f'{produto.preco_unitario:.2f}'])
         tabela = PrettyTable(['NOTA FISCAL'])
-        t_header = PrettyTable(['COD.', 'DATA', 'HORARIO'])
-        t_header.header = False
-        t_header.border = False
-        t_header.add_row(['COD. '+pedido.codigo, 'DATA: '+str(pedido.data), 'HORARIO: '+pedido.horario])
+        t_cod = PrettyTable(['COD. '], border=False, header=False)
+        t_cod.add_row(['COD. '+pedido.codigo])
+        t_header = PrettyTable(['DATA', 'HORARIO'], border=False, header=False)
+        t_header.add_row(['DATA: '+str(pedido.data), 'HORARIO: '+pedido.horario])
+        tabela.add_row([t_cod])
         tabela.add_row([t_header])
-        tabela.add_row(['----------- Cliente -----------'])
-        tabela.add_row([t_cliente])
+        if pedido.cliente:
+            cliente = pedido.cliente
+            t_cliente = PrettyTable(['ID', 'Nome', 'CPF'], border=False)
+            t_cliente.add_row([cliente.id, cliente.nome, cliente.cpf])
+            tabela.add_row(['----------- Cliente -----------'])
+            tabela.add_row([t_cliente])
+        else:
+            tabela.add_row(['Cliente não cadastrado'])
         tabela.add_row(['------------ Itens ------------'])
         tabela.add_row([t_produtos])
         tabela.add_row(['-------------------------------'])
-        t_footer = PrettyTable(['VALOR TOTAL', 'PAGO'])
-        t_footer.header = False
-        t_footer.border = False
+        t_footer = PrettyTable(['VALOR TOTAL', 'PAGO'], header=False, border=False)
         if pedido.pago:
             pago = 'PAGO'
         else: pago = 'A PAGAR'
@@ -60,7 +59,16 @@ class TelaPedido:
         print("1 - Escolher pedido")
         print("2 - Histórico de pedidos")
         print("0 - Voltar")
+
         return self.verifica_numero_inteiro("Escolha a opção: ", [0, 1 , 2])
+
+    def mostra_tela_opcoes_cliente(self):
+        print("------ Adicionar Cliente ------")
+        print("1 - Finalizar")
+        print("2 - Cliente não cadastrado")
+        print("3 - Cliente cadastrado")
+
+        return self.verifica_numero_inteiro("Escolha a opção: ", [0, 1, 2, 3])
 
     def escolhe_prato(self, pratos):
         lista_compras = []
