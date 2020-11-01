@@ -20,7 +20,7 @@ class TelaMain(Tela):
         print('Entrar como:')
         print('1 - Cliente')
         print('2 - Loja')
-        print('3 - Realizar pedido')
+        print('3 - Pedido')
         print('0 - Encerrar')
         opcao = self.verifica_numero_inteiro('Escolha a opção: ', [0, 1, 2, 3])
         print(opcao)

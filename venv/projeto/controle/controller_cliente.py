@@ -8,9 +8,16 @@ class ControllerCliente:
         self.__clientes = [Cliente('Eduardo', '100.100.100-10', 'Rua Douglas Seabra Levier')]
         self.__mantem_tela_aberta = True
 
+    @property
+    def clientes(self):
+        return self.__clientes
 
     def inicializa(self):
+        self.__mantem_tela_aberta = True
         self.abre_tela_inicial()
+
+    def finaliza(self):
+        self.__mantem_tela_aberta = False
 
     def adiciona_cliente(self):
         print('abrindo tela adicionar')
@@ -41,15 +48,18 @@ class ControllerCliente:
             if cliente.id == id:
                 cliente.endereco = valor
 
-    def lista_cliente(self):
+    def lista_cliente(self, busca: bool = False):
         self.__tela_cliente.imprime_lista_cliente(self.__clientes)
+        if busca:
+            return self.__tela_cliente.escolhe_cliente
 
-    def finalizar(self):
-        self.__mantem_tela_aberta = False
+    def cliente(self, id):
+        for cliente in self.clientes:
+            if cliente.id == id:
+                return cliente
 
     def abre_tela_inicial(self):
-        self.__mantem_tela_aberta = True
-        switcher = {0: self.finalizar,
+        switcher = {0: self.finaliza,
                     1: self.adiciona_cliente,
                     2: self.remove_cliente,
                     3: self.abre_tela_altera,

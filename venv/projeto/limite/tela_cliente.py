@@ -68,6 +68,10 @@ class TelaCliente:
             "valor": valor
         }
 
+    def escolhe_cliente(self, clientes):
+        id_clientes = self.pega_id_lista(clientes)
+        return self.verifica_numero_inteiro("Escolha o cliente: ", id_clientes)
+
 
 
 

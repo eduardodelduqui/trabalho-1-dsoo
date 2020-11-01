@@ -50,7 +50,7 @@ class ControllerPrato:
     def lista_prato(self):
         self.__tela_prato.imprime_lista_prato(self.pratos)
 
-    def busca_prato(self, id):
+    def prato(self, id):
         for prato in self.pratos:
             if prato.id == id:
                 return prato
