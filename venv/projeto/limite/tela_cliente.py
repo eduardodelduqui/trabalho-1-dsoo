@@ -1,32 +1,10 @@
 from prettytable import PrettyTable
-import os
+from verifica_valores import VerificaValores
 
 
 class TelaCliente:
     def __init__(self):
-        pass
-
-    def verifica_numero_inteiro(self, mensagem: str = "", valores_validos: [] = None):
-        while True:
-            try:
-                opcao = int(input(mensagem))
-                if (opcao in valores_validos):
-                    return opcao
-                else:
-                    print('Valor inválido, insira o número ao lado da opção desejada')
-            except ValueError:
-                print('Valor inválido, valor precisa ser inteiro')
-
-    def verifica_cpf(self, mensagem: str = ""):
-        while True:
-            try:
-                cpf = int(input(mensagem))
-                if len(str(cpf)) == 11:
-                    return cpf
-                else:
-                    print('CPF inválido, insira um valor válido')
-            except ValueError:
-                print('Valor inválido, insira apenas números')
+        self.__verifica_valores = VerificaValores()
 
     def cria_lista_id(self, clientes: list):
         lista_id = []
@@ -42,10 +20,10 @@ class TelaCliente:
             print('\033[1;36m3\033[0m - Alterar cliente')
             print('\033[1;36m4\033[0m - Listar clientes')
             print('\033[1;36m0\033[0m - Voltar')
-            opcao = self.verifica_numero_inteiro('Escolha a opção: ', [0, 1, 2, 3, 4])
+            opcao = self.__verifica_valores.inteiros('Escolha a opção: ', list(range(5)))
         else:
             print('\033[1;36m0\033[0m - Voltar')
-            opcao = self.verifica_numero_inteiro('Escolha a opção: ', [0, 1])
+            opcao = self.__verifica_valores.inteiros('Escolha a opção: ', list(range(2)))
         return opcao
 
     def imprime_lista_cliente(self, clientes):
@@ -60,9 +38,9 @@ class TelaCliente:
 
 
     def opcoes_adicionar(self):
-        nome = input('Digite o nome do cliente: ')
-        cpf = input('Digite o cpf do cliente: ')
-        endereco = input('Digite o endereço: ')
+        nome = self.__verifica_valores.texto('Digite o nome do cliente: ')
+        cpf = self.__verifica_valores.cpf('Alterar CPF para: ')
+        endereco = self.__verifica_valores.texto('Digite o endereço: ')
 
         cliente = {
             "nome": nome,
@@ -72,7 +50,7 @@ class TelaCliente:
         return cliente
 
     def tela_remover(self):
-        return input('Digite o cpf do cliente a ser removido [0 para voltar]: ')
+        return self.__verifica_valores.cpf('Digite o cpf do cliente a ser removido [0 para voltar]: ')
 
     def tela_alterar_opcoes(self):
         print('------ Alterar ------')
@@ -80,18 +58,18 @@ class TelaCliente:
         print('2 - CPF')
         print('3 - Endereço')
         print('0 - Voltar')
-        opcao = int(input('Digite a opção que deseja alterar: '))
+        opcao = self.__verifica_valores.inteiros('Digite a opção que deseja alterar: ', list(range(4)))
         return opcao
 
     def tela_alterar_para(self, nome: bool = False, cpf: bool = False):
         if(nome):
-            return input('Alterar nome para: ')
+            return self.__verifica_valores.texto('Alterar nome para: ')
         if(cpf):
-            return self.verifica_cpf('Alterar CPF para: ')
+            return self.__verifica_valores.cpf('Alterar CPF para: ')
 
     def escolhe_cliente(self, clientes):
         id_clientes = self.cria_lista_id(clientes)
-        return self.verifica_numero_inteiro("Escolha o cliente [0 para voltar]: ", id_clientes)
+        return self.__verifica_valoress.inteiros("Insira o ID do cliente [0 para voltar]: ", id_clientes, "Valor inválido, insira um ID válido")
 
 
 

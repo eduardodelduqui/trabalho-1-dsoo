@@ -19,7 +19,6 @@ class ControllerPrato:
     def finaliza(self):
         self.__mantem_tela_aberta = False
 
-
     def adiciona_prato(self):
         prato = self.__tela_prato.abre_tela_adicionar()
         self.__pratos.append(Prato(prato["nome"], prato["tipo"], prato["preco"]))
@@ -72,6 +71,7 @@ class ControllerPrato:
 
     def abre_tela_altera(self):
         self.lista_prato()
+        id_prato = self.__tela_prato.escolhe_prato(self.pratos)
         if self.__pratos:
             switcher = {0: self.abre_tela_inicial,
                         1: self.altera_nome,
@@ -79,4 +79,4 @@ class ControllerPrato:
                         3: self.altera_preco}
 
             input_usuario = self.__tela_prato.tela_alterar()
-            funcao_escolhida = switcher[input_usuario["opcao"]](input_usuario["id"], input_usuario["valor"])
+            funcao_escolhida = switcher[input_usuario["opcao"]](id_prato, input_usuario["valor"])

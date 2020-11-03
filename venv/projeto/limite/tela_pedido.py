@@ -1,19 +1,9 @@
 from prettytable import PrettyTable
+from verifica_valores import VerificaValores
 
 class TelaPedido:
     def __init__(self):
-        pass
-
-    def verifica_numero_inteiro(self, mensagem: str, valores):
-        while True:
-            try:
-                opcao = int(input(mensagem))
-                if opcao in valores:
-                    return opcao
-                else:
-                    print("Não existe ID, insira um ID existente")
-            except:
-                print("Insira um valor inteiro")
+        self.__verifica_valores = VerificaValores()
 
     def pega_id_lista(self, pratos: list):
         lista = []
@@ -64,7 +54,7 @@ class TelaPedido:
         print("3 - Ultimos pedidos")
         print("0 - Voltar")
 
-        return self.verifica_numero_inteiro("Escolha a opção: ", [0, 1 , 2, 3])
+        return self.__verifica_valores.inteiros("Escolha a opção: ", list(range(4)))
 
     def mostra_tela_opcoes_cliente(self):
         print("------ Adicionar Cliente ------")
@@ -72,14 +62,14 @@ class TelaPedido:
         print("2 - Cliente não cadastrado")
         print("3 - Cliente cadastrado")
 
-        return self.verifica_numero_inteiro("Escolha a opção: ", [0, 1, 2, 3])
+        return self.__verifica_valores.inteiros("Escolha a opção: ", list(range(4)))
 
     def escolhe_prato(self, pratos):
         lista_compras = []
         id_pratos = self.pega_id_lista(pratos)
         while True:
-            id = self.verifica_numero_inteiro("Escolha o prato: ", id_pratos)
-            qtd = self.verifica_numero_inteiro("Escolha a quantidade: ", list(range(100)))
+            id = self.__verifica_valores.inteiros("Escolha o prato: ", id_pratos)
+            qtd = self.__verifica_valores.inteiros("Escolha a quantidade: ", list(range(99)), 'Valor inválido, não é possível comprar mais de 100 itens')
             compra = {"id": id, "qtd": qtd}
             lista_compras.append(compra)
             if input("Deseja continuar a compra? [S/N]") == "N":
@@ -87,5 +77,5 @@ class TelaPedido:
 
     def escolhe_cliente(self, clientes):
         id_clientes = self.pega_id_lista(clientes)
-        return self.verifica_numero_inteiro("Escolha o cliente: ", id_clientes)
+        return self.__verifica_valores.inteiros("Escolha o cliente: ", id_clientes)
 
