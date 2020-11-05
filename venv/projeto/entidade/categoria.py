@@ -1,14 +1,20 @@
 
-
 class Categoria:
-    def __init__(self, codigo: int):
-        self.__lista = []
-        if (codigo > 0 and codigo <= len(self.__lista)):
-            self.__nome = self.__lista[codigo - 1]
+    __global_id = 0
+    def __init__(self, nome: str):
+        Categoria.__global_id += 1
+        self.__id = Categoria.__global_id
+        self.__nome = nome
+
 
     @property
-    def categorias(self):
-        return self.__lista
+    def nome(self):
+        return self.__nome
 
-    def adiciona(self, categoria):
-        self.__lista.append(categoria)
+    @property
+    def id(self):
+        return self.__id
+
+    @nome.setter
+    def nome(self, nome):
+        self.__nome = nome

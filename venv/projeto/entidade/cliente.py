@@ -1,11 +1,12 @@
 
 class Cliente:
     __global_id = 0
-    def __init__(self, nome: str, cpf: str, endereco: str):
+    def __init__(self, nome: str, cpf: int, endereco: str = '', telefone: int = None):
         Cliente.__global_id += 1
         self.__nome = nome
         self.__cpf = cpf
         self.__endereco = endereco
+        self.__telefone = telefone
         self.__id = Cliente.__global_id
 
     @property
@@ -19,6 +20,10 @@ class Cliente:
     @property
     def endereco(self):
         return self.__endereco
+
+    @property
+    def telefone(self):
+        return self.__telefone
 
     @property
     def id(self):
@@ -35,3 +40,7 @@ class Cliente:
     @endereco.setter
     def endereco(self, endereco):
         self.__endereco = endereco
+
+    @telefone.setter
+    def telefone(self, telefone):
+        self.__telefone = telefone

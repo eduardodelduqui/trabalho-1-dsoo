@@ -3,13 +3,37 @@ class VerificaValores:
     def __init__(self):
         pass
 
-    def texto(self, mensagem: str = ""):
-        texto = input(mensagem)
-        texto = texto.split()
-        texto_tratado = []
-        for trecho in texto:
-            texto_tratado.append(trecho.capitalize())
-        return ' '.join(texto_tratado)
+    def texto(self, mensagem: str = "", mensagem_erro: str = "", especiais: bool = False, numeros: bool = False):
+        invalidos = ''
+        if especiais == False:
+            invalidos += "@#$%¨&*()_-+={[}]?/:;><,.|¹²³£¢¬`´~^°ºª"
+        if numeros == False:
+            invalidos += '0123456789'
+        while True:
+            texto = input(mensagem)
+            if not self.verifica_caracteres(texto, invalidos):
+                texto = texto.split()
+                texto_tratado = []
+                for trecho in texto:
+                    texto_tratado.append(trecho.capitalize())
+                return ' '.join(texto_tratado)
+            else:
+                print(mensagem_erro)
+
+    def verifica_caracteres(self, texto, caracteres):
+        for caracter in caracteres:
+            if caracter in texto:
+                return True
+            else: return False
+
+    def sim_ou_nao(self, mensagem: str = ""):
+        valores_validos = ['s', 'n']
+        while True:
+            opcao = input(mensagem).lower()
+            if opcao in valores_validos:
+                return opcao
+            else:
+                print('Valor inválido, insira S ou N')
 
     def inteiros(self, mensagem: str = "", valores_validos: list = None, mensagem_erro: str = "Valor inválido, insira o número ao lado da opção desejada"):
         while True:
@@ -28,7 +52,6 @@ class VerificaValores:
             except ValueError:
                 print('Valor inválido, insira apenas número')
 
-
     def float(self, mensagem: str = ""):
         while True:
             try:
@@ -36,20 +59,23 @@ class VerificaValores:
             except ValueError:
                 print('Valor inválido, valor não pode ser um texto')
 
-    def cpf(self, mensagem: str = ""):
+    def cpf(self, mensagem: str = "", lista: list = None):
         while True:
-            try:
-                cpf = int(input(mensagem))
-                if len(str(cpf)) == 11:
-                    return self.retorna_cpf_tratado(cpf)
-                else:
-                    print('CPF inválido, insira um valor válido')
-            except ValueError:
+            cpf = input(mensagem)
+            if cpf.isdigit():
+                if len(cpf) == 11 and cpf.isdigit():
+                    for cliente in lista:
+                        if cpf == cliente.cpf:
+                            print('CPF já cadastrado, insira outro CPF')
+                            break
+                        else:
+                            return cpf
+                else: print('CPF inválido, insira um valor válido')
+            else:
                 print('Valor inválido, insira apenas números')
 
-    def retorna_cpf_tratado(self, cpf: int):
+    def cpf_tratado(self, cpf: str):
         cpf_tratado = ''
-        cpf = list(str(cpf))
         for index, digito in enumerate(cpf):
             cpf_tratado += digito
             if index == 2 or index == 5:

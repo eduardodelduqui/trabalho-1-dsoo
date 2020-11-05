@@ -1,19 +1,13 @@
 from limite.tela import Tela
+from verifica_valores import VerificaValores
 
 class TelaMain(Tela):
     def __init__(self):
-        pass
+        self.__verifica_valores = VerificaValores()
 
-    def verifica_numero_inteiro(self, mensagem: str = "", valores_validos: [] = None):
-        while True:
-            try:
-                opcao = int(input(mensagem))
-                if (opcao in valores_validos):
-                    return opcao
-                else:
-                    print('Valor inválido, insira o número ao lado da opção desejada')
-            except ValueError:
-                print('Valor inválido, valor precisa ser inteiro')
+    @property
+    def verifica_valores(self):
+        return self.__verifica_valores
 
     def mostra_tela_opcoes(self):
         print("-------------- Aplicativo --------------")
@@ -22,6 +16,5 @@ class TelaMain(Tela):
         print('2 - Loja')
         print('3 - Pedido')
         print('0 - Encerrar')
-        opcao = self.verifica_numero_inteiro('Escolha a opção: ', [0, 1, 2, 3])
-        print(opcao)
+        opcao = self.verifica_valores.inteiros('Escolha a opção: ', list(range(4)))
         return opcao

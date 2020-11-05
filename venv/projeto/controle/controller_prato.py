@@ -1,27 +1,37 @@
 from entidade.prato import Prato
 from limite.tela_prato import TelaPrato
+from entidade.categoria import Categoria
+from controle.controller import Controller
 
-
-class ControllerPrato:
-    def __init__(self):
+class ControllerPrato(Controller):
+    def __init__(self, controle):
         self.__tela_prato = TelaPrato()
-        self.__pratos = [Prato("Esfiha", "Lanches", 1.45), Prato("Kibe", "Lanches", 1.35)]
-        self.__mantem_tela_aberta = True
+        self.__pratos = [Prato("Esfiha", Categoria('Lanches'), 1.45), Prato("Kibe", Categoria('Lanches'), 1.35)]
+        self.__controle_principal = controle
 
     @property
     def pratos(self):
         return self.__pratos
 
-    def inicializa(self):
-        self.__mantem_tela_aberta = True
-        self.abre_tela_inicial()
-
-    def finaliza(self):
-        self.__mantem_tela_aberta = False
+    @property
+    def tela_prato(self):
+        return self.__tela_prato
 
     def adiciona_prato(self):
         prato = self.__tela_prato.abre_tela_adicionar()
-        self.__pratos.append(Prato(prato["nome"], prato["tipo"], prato["preco"]))
+        opcao = self.__controle_principal.controller_categoria.tela_categoria.mostra_tela_opcoes()
+        if opcao == 1: categoria_prato = self.escolhe_categoria()
+        else: categoria_prato = self.adiciona_categoria()
+
+        self.__pratos.append(Prato(prato["nome"], categoria_prato, prato["preco"]))
+
+    def escolhe_categoria(self):
+        categoria_prato = self.__controle_principal.controller_categoria.escolhe_categoria()
+        return categoria_prato
+
+    def adiciona_categoria(self):
+        categoria_prato = self.__controle_principal.controller_categoria.adiciona_categoria()
+        return categoria_prato
 
     def remove_prato(self):
         self.lista_prato()
@@ -54,8 +64,6 @@ class ControllerPrato:
             if prato.id == id:
                 return prato
 
-
-
     def abre_tela_inicial(self):
         switcher = {0: self.finaliza,
                     1: self.adiciona_prato,
@@ -63,7 +71,7 @@ class ControllerPrato:
                     3: self.abre_tela_altera,
                     4: self.lista_prato}
 
-        while self.__mantem_tela_aberta:
+        while self.mantem_tela_aberta:
             opcao = self.__tela_prato.mostra_tela_opcoes()
             funcao_escolhida = switcher[opcao]
             funcao_escolhida()

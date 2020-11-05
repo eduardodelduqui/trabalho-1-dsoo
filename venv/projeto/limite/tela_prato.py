@@ -23,12 +23,10 @@ class TelaPrato:
 
     def abre_tela_adicionar(self):
         nome = self.__verifica_valores.texto('Digite o nome da prato: ')
-        tipo = self.__verifica_valores.texto('Digite a categoria do prato: ')
         preco = self.__verifica_valores.float('Digite o preço do prato: ')
         preco = round(preco, 2)
         prato = {
             "nome": nome,
-            "tipo": tipo,
             "preco": preco
         }
         return prato
@@ -41,7 +39,7 @@ class TelaPrato:
             print('----------- Pratos -----------')
             t = PrettyTable(['ID', 'Nome', 'Tipo', 'Preço'])
             for prato in pratos:
-                t.add_row([prato.id, prato.nome, prato.tipo, 'R$ ' + f'{prato.preco_unitario:.2f}'])
+                t.add_row([prato.id, prato.nome, prato.tipo.nome, 'R$ ' + f'{prato.preco_unitario:.2f}'])
             print(t)
         else:
             print('\033[1;31m!!! Lista de pratos vazia!!!\033[0m')

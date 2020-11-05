@@ -49,20 +49,33 @@ class TelaPedido:
 
     def mostra_tela_opcoes(self):
         print("------- Pedido -------")
-        print("1 - Escolher pedido")
+        print("1 - Efetuar pedido")
         print("2 - Histórico de pedidos")
-        print("3 - Ultimos pedidos")
         print("0 - Voltar")
+        return self.__verifica_valores.inteiros("Escolha a opção: ", list(range(3)))
 
-        return self.__verifica_valores.inteiros("Escolha a opção: ", list(range(4)))
+    def mostra_tela_historico(self):
+        print("------ Histórico ------")
+        print("1 - Desde o início")
+        print("2 - Últimos")
+        print("0 - Voltar")
+        return self.__verifica_valores.inteiros("Escolha a opção: ", list(range(3)))
 
     def mostra_tela_opcoes_cliente(self):
         print("------ Adicionar Cliente ------")
-        print("1 - Finalizar sem cliente")
+        print("1 - Não adicionar cliente")
         print("2 - Cliente não cadastrado")
         print("3 - Cliente cadastrado")
-
+        print("4 - Cancelar compra")
         return self.__verifica_valores.inteiros("Escolha a opção: ", list(range(4)))
+
+    def confirma_pedido(self):
+        print("------ Confirmar Pedido ------")
+        print("1 - Confirmar")
+        print("2 - Alterar pedido")
+        print("3 - Cancelar pedido")
+        print("0 - Voltar")
+        return self.__verifica_valores.inteiros("Escolha a opçao: ", list(range(4)))
 
     def escolhe_prato(self, pratos):
         lista_compras = []
@@ -70,12 +83,14 @@ class TelaPedido:
         while True:
             id = self.__verifica_valores.inteiros("Escolha o prato: ", id_pratos)
             qtd = self.__verifica_valores.inteiros("Escolha a quantidade: ", list(range(99)), 'Valor inválido, não é possível comprar mais de 100 itens')
-            compra = {"id": id, "qtd": qtd}
-            lista_compras.append(compra)
-            if input("Deseja continuar a compra? [S/N]") == "N":
+            if qtd != 0:
+                compra = {"id": id, "qtd": qtd}
+                lista_compras.append(compra)
+            if self.__verifica_valores.sim_ou_nao("Deseja continuar a compra? [S/N]", ) == "n":
                 return lista_compras
 
     def escolhe_cliente(self, clientes):
         id_clientes = self.pega_id_lista(clientes)
         return self.__verifica_valores.inteiros("Escolha o cliente: ", id_clientes)
+
 

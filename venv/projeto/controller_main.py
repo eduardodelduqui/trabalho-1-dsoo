@@ -2,12 +2,14 @@ from tela_main import TelaMain
 from controle.controller_cliente import ControllerCliente
 from controle.controller_prato import ControllerPrato
 from controle.controller_pedido import ControllerPedido
+from controle.controller_categoria import ControllerCategoria
 
 class ControllerMain:
     def __init__(self):
         self.__tela_main = TelaMain()
         self.__controller_cliente = ControllerCliente()
-        self.__controller_prato = ControllerPrato()
+        self.__controller_prato = ControllerPrato(self)
+        self.__controller_categoria = ControllerCategoria()
         self.__controller_pedido = ControllerPedido(self)
 
     @property
@@ -18,11 +20,15 @@ class ControllerMain:
     def controller_cliente(self):
         return self.__controller_cliente
 
+    @property
+    def controller_categoria(self):
+        return self.__controller_categoria
+
     def inicializa_sistema(self):
         self.abre_tela_inicial()
 
     def finalizar(self):
-        exit(0)
+        exit('Aplicativo encerrado')
 
     def cliente(self):
         self.__controller_cliente.inicializa()
