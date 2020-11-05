@@ -1,5 +1,6 @@
 from entidade.pedido import Pedido
 from limite.tela_pedido import TelaPedido
+from datetime import datetime, date
 
 
 class ControllerPedido:
@@ -37,16 +38,32 @@ class ControllerPedido:
         self.__controle_principal.controller_prato.lista_prato()
 
     def imprime_pedido(self, pedido: Pedido = None):
-        if pedido == None:
-            pedido = self.ultimo_pedido
         self.__tela_pedido.imprime_pedido(pedido)
 
     def imprime_lista_pedidos(self):
+        if(self.__pedidos):
+            for pedido in self.__pedidos:
+                self.imprime_pedido(pedido)
+        else:
+            self.imprime_pedido()
+
+    def historico_pedidos(self):
+        lista = []
         for pedido in self.__pedidos:
-            self.imprime_pedido(pedido)
+            if pedido.data == date.today():
+                lista.append(pedido)
+        if lista:
+            for item in lista: self.imprime_pedido(item)
+        else:
+            self.imprime_pedido()
 
     def cadastra_cliente(self):
         self.__controle_principal.controller_cliente.adiciona_cliente()
+        cliente = self.__controle_principal.controller_cliente.ultimo_cliente()
+        print(cliente)
+        pedido = self.ultimo_pedido
+        pedido.adiciona_cliente(cliente)
+        self.imprime_pedido(pedido)
 
     def escolhe_cliente(self):
         pedido = self.ultimo_pedido
@@ -54,7 +71,6 @@ class ControllerPedido:
         id_cliente = self.__tela_pedido.escolhe_cliente(self.__controle_principal.controller_cliente.clientes)
         cliente = self.__controle_principal.controller_cliente.cliente(id_cliente)
         pedido.adiciona_cliente(cliente)
-
         self.imprime_pedido(pedido)
 
     def escolhe_pedido(self):
@@ -68,27 +84,28 @@ class ControllerPedido:
                 continue
             pedido.adiciona_produto(produto, quantidade)
         self.adiciona_pedido(pedido)
-        # self.imprime_pedido(pedido)
         self.abre_tela_escolhe_cliente()
 
     def abre_tela_escolhe_cliente(self):
         switcher = {
+            0: self.finaliza,
             1: self.imprime_pedido,
             2: self.cadastra_cliente,
-            3: self.escolhe_cliente
-        }
+            3: self.escolhe_cliente,}
         opcao = self.__tela_pedido.mostra_tela_opcoes_cliente()
-        switcher[opcao]()
-
+        if opcao == 1:
+            switcher[opcao](self.ultimo_pedido)
+        else:
+            switcher[opcao]()
 
     def abre_tela_inicial(self):
         switcher = {
             0: self.finaliza,
             1: self.escolhe_pedido,
-            2: self.imprime_lista_pedidos
-        }
-
+            2: self.imprime_lista_pedidos,
+            3: self.historico_pedidos}
         opcao = self.__tela_pedido.mostra_tela_opcoes()
         switcher[opcao]()
+
 
 

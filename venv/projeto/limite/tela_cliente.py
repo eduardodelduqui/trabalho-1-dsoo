@@ -9,7 +9,7 @@ class TelaCliente:
     def verifica_numero_inteiro(self, mensagem: str = "", valores_validos: [] = None):
         while True:
             try:
-                opcao = int(input('Escolha a Opção: '))
+                opcao = int(input(mensagem))
                 if (opcao in valores_validos):
                     return opcao
                 else:
@@ -17,14 +17,35 @@ class TelaCliente:
             except ValueError:
                 print('Valor inválido, valor precisa ser inteiro')
 
-    def mostra_tela_opcoes(self):
+    def verifica_cpf(self, mensagem: str = ""):
+        while True:
+            try:
+                cpf = int(input(mensagem))
+                if len(str(cpf)) == 11:
+                    return cpf
+                else:
+                    print('CPF inválido, insira um valor válido')
+            except ValueError:
+                print('Valor inválido, insira apenas números')
+
+    def cria_lista_id(self, clientes: list):
+        lista_id = []
+        for cliente in clientes:
+            lista_id.append(cliente.id)
+        return lista_id
+
+    def mostra_tela_opcoes(self, clientes):
         print("-------------- Cliente --------------")
         print('\033[1;36m1\033[0m - Adicionar cliente')
-        print('\033[1;36m2\033[0m - Remover cliente')
-        print('\033[1;36m3\033[0m - Alterar cliente')
-        print('\033[1;36m4\033[0m - Listar clientes')
-        print('\033[1;36m0\033[0m - Voltar')
-        opcao = self.verifica_numero_inteiro('Escolha a opção: ', [0, 1, 2, 3, 4])
+        if clientes:
+            print('\033[1;36m2\033[0m - Remover cliente')
+            print('\033[1;36m3\033[0m - Alterar cliente')
+            print('\033[1;36m4\033[0m - Listar clientes')
+            print('\033[1;36m0\033[0m - Voltar')
+            opcao = self.verifica_numero_inteiro('Escolha a opção: ', [0, 1, 2, 3, 4])
+        else:
+            print('\033[1;36m0\033[0m - Voltar')
+            opcao = self.verifica_numero_inteiro('Escolha a opção: ', [0, 1])
         return opcao
 
     def imprime_lista_cliente(self, clientes):
@@ -51,26 +72,26 @@ class TelaCliente:
         return cliente
 
     def tela_remover(self):
-        return input('Digite o cpf do cliente a ser removido: ')
+        return input('Digite o cpf do cliente a ser removido [0 para voltar]: ')
 
-    def tela_alterar(self):
-        id = int(input('Digite o ID do cliente a ser alterado: '))
+    def tela_alterar_opcoes(self):
         print('------ Alterar ------')
         print('1 - Nome')
         print('2 - CPF')
         print('3 - Endereço')
         print('0 - Voltar')
         opcao = int(input('Digite a opção que deseja alterar: '))
-        valor = input('Alterar para: ')
-        return {
-            "id": id,
-            "opcao": opcao,
-            "valor": valor
-        }
+        return opcao
+
+    def tela_alterar_para(self, nome: bool = False, cpf: bool = False):
+        if(nome):
+            return input('Alterar nome para: ')
+        if(cpf):
+            return self.verifica_cpf('Alterar CPF para: ')
 
     def escolhe_cliente(self, clientes):
-        id_clientes = self.pega_id_lista(clientes)
-        return self.verifica_numero_inteiro("Escolha o cliente: ", id_clientes)
+        id_clientes = self.cria_lista_id(clientes)
+        return self.verifica_numero_inteiro("Escolha o cliente [0 para voltar]: ", id_clientes)
 
 
 
