@@ -74,16 +74,19 @@ class ControllerPedido(Controller):
 
     def escolhe_pedido(self):
         self.lista_prato()
-        lista_compras = self.__tela_pedido.escolhe_prato(self.__controle_principal.controller_prato.pratos)
-        for index, item in enumerate(lista_compras):
-            produto = self.__controle_principal.controller_prato.prato(item["id"])
-            quantidade = item["qtd"]
-            if index == 0:
-                pedido = Pedido(produto, quantidade)
-                continue
-            pedido.adiciona_produto(produto, quantidade)
-        self.pedido_em_andamento = pedido
-        self.abre_tela_escolhe_cliente()
+        if self.__controle_principal.controller_prato.pratos:
+            lista_compras = self.__tela_pedido.escolhe_prato(self.__controle_principal.controller_prato.pratos)
+            for index, item in enumerate(lista_compras):
+                produto = self.__controle_principal.controller_prato.prato(item["id"])
+                quantidade = item["qtd"]
+                if index == 0:
+                    pedido = Pedido(produto, quantidade)
+                    continue
+                pedido.adiciona_produto(produto, quantidade)
+            self.pedido_em_andamento = pedido
+            self.abre_tela_escolhe_cliente()
+        else:
+            self.abre_tela_inicial()
 
     def confirma_pedido(self):
         pedido = self.pedido_em_andamento

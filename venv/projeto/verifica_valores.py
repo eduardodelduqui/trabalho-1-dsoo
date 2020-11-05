@@ -59,17 +59,13 @@ class VerificaValores:
             except ValueError:
                 print('Valor inválido, valor não pode ser um texto')
 
-    def cpf(self, mensagem: str = "", lista: list = None):
+    def cpf(self, mensagem: str = "", lista: list = []):
         while True:
             cpf = input(mensagem)
             if cpf.isdigit():
                 if len(cpf) == 11 and cpf.isdigit():
-                    for cliente in lista:
-                        if cpf == cliente.cpf:
-                            print('CPF já cadastrado, insira outro CPF')
-                            break
-                        else:
-                            return cpf
+                    if self.verifica_cpf(cpf, lista):
+                        return cpf
                 else: print('CPF inválido, insira um valor válido')
             else:
                 print('Valor inválido, insira apenas números')
@@ -83,6 +79,13 @@ class VerificaValores:
             if index == 8:
                 cpf_tratado += '-'
         return cpf_tratado
+
+    def verifica_cpf(self, cpf, lista):
+        for item in lista:
+            if cpf == item.cpf:
+                print('CPF já cadastrado, insira outro CPF')
+                return False
+        return True
 
 
 
