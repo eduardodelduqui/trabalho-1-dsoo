@@ -62,8 +62,38 @@ class VerificaValores:
     def cpf(self, mensagem: str = "", lista: list = None):
         while True:
             cpf = input(mensagem)
+            soma = 0
+            multiplicador = 10
             if cpf.isdigit():
-                if len(cpf) == 11 and cpf.isdigit():
+                
+                #Validando digito verificador
+                valido = False
+                for i in range(9):
+                    soma += multiplicador*int(cpf[i])
+                    multiplicador -=1
+                if soma%11 == 0 or soma%11 == 1:
+                    digito1 = 0
+                else:
+                    digito1 = 11 - (soma%11)
+                
+                multiplicador = 11
+                soma = 0
+                for i in range(10):
+                    if multiplicador == 2:
+                        soma += 2*digito1
+                    else:
+                        soma += multiplicador*int(cpf[i])
+                        multiplicador -= 1
+                if soma%11 == 0 or soma%11 == 1:
+                    digito2 = 0
+                else:
+                    digito2 = 11 - (soma%11)
+                
+                if int(cpf[9]) == digito1 and int(cpf[10]) == digito2:
+                    valido = True
+                #fim vallidação digito verificador
+                    
+                if len(cpf) == 11 and cpf.isdigit() and valido:
                     for cliente in lista:
                         if cpf == cliente.cpf:
                             print('CPF já cadastrado, insira outro CPF')
@@ -71,6 +101,7 @@ class VerificaValores:
                         else:
                             return cpf
                 else: print('CPF inválido, insira um valor válido')
+            
             else:
                 print('Valor inválido, insira apenas números')
 
