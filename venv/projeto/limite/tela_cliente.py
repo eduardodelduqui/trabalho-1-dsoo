@@ -64,7 +64,7 @@ class TelaCliente:
         return cliente
 
     def tela_remover(self):
-        return self.verifica_valores.cpf('Digite o cpf do cliente a ser removido [0 para voltar]: ')
+        return self.verifica_valores.altera_cpf('Digite o cpf do cliente a ser removido [0 para voltar]: ')
 
     def tela_alterar_opcoes(self):
         print('------ Alterar ------')
@@ -73,14 +73,14 @@ class TelaCliente:
         print('3 - Endereço')
         print('4 - Telefone')
         print('0 - Voltar')
-        opcao = self.verifica_valores.inteiros('Digite a opção que deseja alterar: ', list(range(4)))
+        opcao = self.verifica_valores.inteiros('Digite a opção que deseja alterar: ', list(range(5)))
         return opcao
 
     def tela_alterar_para(self, nome: bool = False, cpf: bool = False, endereco: bool = False, telefone: bool = False):
         if(nome):
             return self.verifica_valores.texto('Alterar nome para: ')
         if(cpf):
-            return self.verifica_valores.cpf('Alterar CPF para: ')
+            return self.verifica_valores.altera_cpf('Alterar CPF para: ')
         if(endereco):
             return self.verifica_valores.texto('Alterar endereço para: ')
         if(telefone):

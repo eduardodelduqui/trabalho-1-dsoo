@@ -49,6 +49,7 @@ class ControllerCliente(Controller):
             if cliente.id == id:
                 cliente.cpf = valor
 
+
     def altera_endereco(self, id):
         valor = self.tela_cliente.tela_alterar_para(endereco=True)
         for index, cliente in enumerate(self.clientes):

@@ -68,32 +68,97 @@ class VerificaValores:
                 
                 #Validando digito verificador
                 valido = False
-                for i in range(9):
-                    soma += multiplicador*int(cpf[i])
-                    multiplicador -=1
-                if soma%11 == 0 or soma%11 == 1:
-                    digito1 = 0
-                else:
-                    digito1 = 11 - (soma%11)
                 
-                multiplicador = 11
-                soma = 0
-                for i in range(10):
-                    if multiplicador == 2:
-                        soma += 2*digito1
-                    else:
+                if len(cpf) == 11:
+                
+                    for i in range(9):
                         soma += multiplicador*int(cpf[i])
-                        multiplicador -= 1
-                if soma%11 == 0 or soma%11 == 1:
-                    digito2 = 0
-                else:
-                    digito2 = 11 - (soma%11)
-                
-                if int(cpf[9]) == digito1 and int(cpf[10]) == digito2:
-                    valido = True
-                #fim vallidação digito verificador
+                        multiplicador -=1
+                    if soma%11 == 0 or soma%11 == 1:
+                        digito1 = 0
+                    else:
+                        digito1 = 11 - (soma%11)
                     
-                if len(cpf) == 11 and cpf.isdigit() and valido:
+                    multiplicador = 11
+                    soma = 0
+                    for i in range(10):
+                        if multiplicador == 2:
+                            soma += 2*digito1
+                        else:
+                            soma += multiplicador*int(cpf[i])
+                            multiplicador -= 1
+                    if soma%11 == 0 or soma%11 == 1:
+                        digito2 = 0
+                    else:
+                        digito2 = 11 - (soma%11)
+                    
+                    if int(cpf[9]) == digito1 and int(cpf[10]) == digito2:
+                        valido = True
+                    #fim vallidação digito verificador
+                    
+                if cpf.isdigit() and valido:
+                    if lista != None:
+                        for cliente in lista:
+                            if lista != cpf == cliente.cpf:
+                                print('CPF já cadastrado, insira outro CPF')
+                                break
+                            else:
+                                return cpf
+                    else:
+                        return cpf
+                    
+                else: print('CPF inválido, insira um valor válido')
+            
+            else:
+                print('Valor inválido, insira apenas números')
+    
+    def altera_cpf(self, mensagem: str = ""):
+        while True:
+            cpf = input(mensagem)
+            soma = 0
+            multiplicador = 10
+            if cpf.isdigit():
+                
+                #Validando digito verificador
+                valido = False
+                
+                if len(cpf) == 11:
+                
+                    for i in range(9):
+                        soma += multiplicador*int(cpf[i])
+                        multiplicador -=1
+                    if soma%11 == 0 or soma%11 == 1:
+                        digito1 = 0
+                    else:
+                        digito1 = 11 - (soma%11)
+                    
+                    multiplicador = 11
+                    soma = 0
+                    for i in range(10):
+                        if multiplicador == 2:
+                            soma += 2*digito1
+                        else:
+                            soma += multiplicador*int(cpf[i])
+                            multiplicador -= 1
+                    if soma%11 == 0 or soma%11 == 1:
+                        digito2 = 0
+                    else:
+                        digito2 = 11 - (soma%11)
+                    
+                    if int(cpf[9]) == digito1 and int(cpf[10]) == digito2:
+                        valido = True
+                    #fim vallidação digito verificador
+                    
+                if cpf.isdigit() and valido:
+                    return cpf
+                else: print('CPF inválido, insira um valor válido')
+            
+            else:
+                print('Valor inválido, insira apenas números')
+    
+   
+                    
+                if cpf.isdigit() and valido:
                     for cliente in lista:
                         if cpf == cliente.cpf:
                             print('CPF já cadastrado, insira outro CPF')
@@ -104,7 +169,7 @@ class VerificaValores:
             
             else:
                 print('Valor inválido, insira apenas números')
-
+                
     def cpf_tratado(self, cpf: str):
         cpf_tratado = ''
         for index, digito in enumerate(cpf):
