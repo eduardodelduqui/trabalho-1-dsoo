@@ -105,7 +105,7 @@ class VerificaValores:
             telefone_tratado += digito
             if index == 1:
                 telefone_tratado += ')'
-            if index == 7:
+            if index == 6:
                 telefone_tratado += '-'
         return telefone_tratado
 

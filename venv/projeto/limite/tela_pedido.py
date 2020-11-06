@@ -33,7 +33,8 @@ class TelaPedido:
             if pedido.cliente:
                 cliente = pedido.cliente
                 t_cliente = PrettyTable(['ID', 'Nome', 'CPF'], border=False)
-                t_cliente.add_row([cliente.id, cliente.nome, cliente.cpf])
+                cliente_cpf = self.verifica_valores.cpf_tratado(cliente.cpf)
+                t_cliente.add_row([cliente.id, cliente.nome, cliente_cpf])
                 tabela.add_row(['----------- Cliente -----------'])
                 tabela.add_row([t_cliente])
             else:
