@@ -6,7 +6,7 @@ from controle.controller import Controller
 class ControllerCliente(Controller):
     def __init__(self):
         self.__tela_cliente = TelaCliente()
-        self.__clientes = [Cliente('Eduardo', '14328819739', 'Rua Douglas Seabra Levier')]
+        self.__clientes = [] 
         self.__cliente_em_andamento = None
 
     @property

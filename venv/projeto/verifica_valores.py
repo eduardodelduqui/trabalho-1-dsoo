@@ -97,12 +97,13 @@ class VerificaValores:
                     #fim vallidação digito verificador
                     
                 if cpf.isdigit() and valido:
-                    if lista != None:
+                    if len(lista) != 0:
                         for cliente in lista:
-                            if lista != cpf == cliente.cpf:
+                            if cpf == cliente.cpf:
                                 print('CPF já cadastrado, insira outro CPF')
                                 break
                             else:
+                                print(lista)
                                 return cpf
                     else:
                         return cpf
@@ -151,24 +152,14 @@ class VerificaValores:
                     
                 if cpf.isdigit() and valido:
                     return cpf
-                else: print('CPF inválido, insira um valor válido')
+                else:
+                    print('CPF inválido, insira um valor válido')
             
             else:
                 print('Valor inválido, insira apenas números')
     
    
                     
-                if cpf.isdigit() and valido:
-                    for cliente in lista:
-                        if cpf == cliente.cpf:
-                            print('CPF já cadastrado, insira outro CPF')
-                            break
-                        else:
-                            return cpf
-                else: print('CPF inválido, insira um valor válido')
-            
-            else:
-                print('Valor inválido, insira apenas números')
                 
     def cpf_tratado(self, cpf: str):
         cpf_tratado = ''
