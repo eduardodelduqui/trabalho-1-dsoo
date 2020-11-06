@@ -46,14 +46,15 @@ class TelaCliente:
         print('----------- Clientes -----------')
         t = PrettyTable(['ID', 'Nome', 'CPF', 'Telefone', 'Endereço'])
         cliente_cpf = self.verifica_valores.cpf_tratado(cliente.cpf)
-        t.add_row([cliente.id, cliente.nome, cliente_cpf, cliente.telefone, cliente.endereco])
+        cliente_telefone = self.verifica_valores.telefone_tratado(cliente.telefone)
+        t.add_row([cliente.id, cliente.nome, cliente_cpf, cliente_telefone, cliente.endereco])
         print(t)
 
     def opcoes_adicionar(self, clientes):
         nome = self.verifica_valores.texto('Digite o nome do cliente: ')
         cpf = self.verifica_valores.cpf('Alterar CPF para: ', clientes)
         endereco = self.verifica_valores.texto('Digite o endereço: ')
-        telefone = self.verifica_valores.inteiros('Digite o telefone: ')
+        telefone = self.verifica_valores.telefone('Digite o telefone (com DDD): ')
 
         cliente = {
             "nome": nome,
@@ -84,7 +85,7 @@ class TelaCliente:
         if(endereco):
             return self.verifica_valores.texto('Alterar endereço para: ')
         if(telefone):
-            return self.verifica_valores.inteiros('Alterar telefone para: ')
+            return self.verifica_valores.telefone('Alterar telefone para: ')
 
     def tela_confirma(self):
         print('------ Confirmar ------')

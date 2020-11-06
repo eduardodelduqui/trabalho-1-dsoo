@@ -5,6 +5,10 @@ class TelaPedido:
     def __init__(self):
         self.__verifica_valores = VerificaValores()
 
+    @property
+    def verifica_valores(self):
+        return self.__verifica_valores
+
     def pega_id_lista(self, pratos: list):
         lista = []
         for prato in pratos:
@@ -49,32 +53,34 @@ class TelaPedido:
 
     def mostra_tela_opcoes(self):
         print("------- Pedido -------")
-        print("1 - Efetuar pedido")
-        print("2 - Histórico de pedidos")
-        print("0 - Voltar")
+        print("\033[1;36m1\033[0m - Efetuar pedido")
+        print("\033[1;36m2\033[0m - Histórico de pedidos")
+        print("\033[1;91m0\033[0m - Voltar")
         return self.__verifica_valores.inteiros("Escolha a opção: ", list(range(3)))
 
     def mostra_tela_historico(self):
         print("------ Histórico ------")
-        print("1 - Desde o início")
-        print("2 - Últimos")
-        print("0 - Voltar")
+        print("\033[1;36m1\033[0m - Desde o início")
+        print("\033[1;36m2\033[0m - Últimos")
+        print("\033[1;91m0\033[0m - Voltar")
         return self.__verifica_valores.inteiros("Escolha a opção: ", list(range(3)))
 
-    def mostra_tela_opcoes_cliente(self):
+    def mostra_tela_opcoes_cliente(self, clientes):
         print("------ Adicionar Cliente ------")
-        print("1 - Não adicionar cliente")
-        print("2 - Cliente não cadastrado")
-        print("3 - Cliente cadastrado")
-        print("4 - Cancelar compra")
-        return self.__verifica_valores.inteiros("Escolha a opção: ", list(range(4)))
+        print("\033[1;36m1\033[0m - Não adicionar cliente")
+        print("\033[1;36m2\033[0m - Cliente não cadastrado")
+        if clientes:
+            print("\033[1;36m3\033[0m - Cliente cadastrado")
+        print("\033[1;91m0\033[0m - Cancelar compra")
+        if clientes: return self.verifica_valores.inteiros("Escolha a opção: ", list(range(4)))
+        else: return self.__verifica_valores.inteiros("Escolha a opção: ", list(range(3)))
 
     def confirma_pedido(self):
         print("------ Confirmar Pedido ------")
-        print("1 - Confirmar")
-        print("2 - Alterar pedido")
-        print("3 - Cancelar pedido")
-        print("0 - Voltar")
+        print("\033[1;36m1\033[0m - Confirmar")
+        print("\033[1;36m2\033[0m - Alterar pedido")
+        print("\033[1;36m3\033[0m - Cancelar pedido")
+        print("\033[1;91m0\033[0m - Voltar")
         return self.__verifica_valores.inteiros("Escolha a opçao: ", list(range(4)))
 
     def escolhe_prato(self, pratos):

@@ -87,5 +87,28 @@ class VerificaValores:
                 return False
         return True
 
+    def telefone(self, mensagem: str = ""):
+        while True:
+            try:
+                telefone = int(input(mensagem))
+                if len(str(telefone)) == 10 or len(str(telefone)) == 11:
+                    return telefone
+                else:
+                    print('Valor inválido, insira um número de telefone válido')
+            except ValueError:
+                print('Valor inválido, insira apenas números')
+
+    def telefone_tratado(self, telefone: int):
+        telefone_tratado = '('
+        telefone = str(telefone)
+        for index, digito in enumerate(telefone):
+            telefone_tratado += digito
+            if index == 1:
+                telefone_tratado += ')'
+            if index == 7:
+                telefone_tratado += '-'
+        return telefone_tratado
+
+
 
 

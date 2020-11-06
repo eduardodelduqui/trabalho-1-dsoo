@@ -23,6 +23,10 @@ class ControllerPedido(Controller):
     def pedido_em_andamento(self):
         return self.__pedido_em_andamento
 
+    @property
+    def controle_principal(self):
+        return self.__controle_principal
+
     @pedido_em_andamento.setter
     def pedido_em_andamento(self, pedido):
         self.__pedido_em_andamento = pedido
@@ -37,7 +41,7 @@ class ControllerPedido(Controller):
         self.__controle_principal.controller_cliente.imprime_lista_cliente()
 
     def lista_prato(self):
-        self.__controle_principal.controller_prato.lista_prato()
+        self.__controle_principal.controller_prato.imprime_lista_prato()
 
     def imprime_pedido(self, pedido: Pedido = None):
         self.__tela_pedido.imprime_pedido(pedido)
@@ -114,7 +118,7 @@ class ControllerPedido(Controller):
             1: self.abre_tela_cofirma,
             2: self.cadastra_cliente,
             3: self.escolhe_cliente,}
-        opcao = self.__tela_pedido.mostra_tela_opcoes_cliente()
+        opcao = self.__tela_pedido.mostra_tela_opcoes_cliente(self.controle_principal.controller_cliente.clientes)
         switcher[opcao]()
 
     def abre_tela_historico(self):

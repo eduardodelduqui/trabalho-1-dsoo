@@ -108,6 +108,7 @@ class ControllerCliente(Controller):
     def abre_tela_altera(self):
         self.imprime_lista_cliente()
         id = self.tela_cliente.escolhe_cliente(self.clientes)
+        self.imprime_cliente(self.cliente(id))
         switcher = {0: self.abre_tela_inicial,
                         1: self.altera_nome,
                         2: self.altera_cpf,

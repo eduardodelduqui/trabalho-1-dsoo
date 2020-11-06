@@ -48,10 +48,10 @@ class TelaPrato:
 
     def tela_alterar(self):
         print('------ Alterar ------')
-        print('1 - Nome')
-        print('2 - Categoria')
-        print('3 - Preço')
-        print('0 - Voltar')
+        print('\033[1;36m1\033[0m  - Nome')
+        print('\033[1;36m2\033[0m - Categoria')
+        print('\033[1;36m3\033[0m - Preço')
+        print('\033[1;91m0\033[0m - Voltar')
         opcao = self.__verifica_valores.inteiros('Digite a opção que deseja alterar: ')
         return opcao
 
@@ -63,8 +63,8 @@ class TelaPrato:
 
     def tela_altera_categoria(self):
         print("------ Categorias ------")
-        print("1 - Escolher categoria")
-        print("2 - Criar nova categoria")
+        print("\033[1;36m1\033[0m - Escolher categoria")
+        print("\033[1;36m2\033[0m - Criar nova categoria")
         opcao = self.__verifica_valores.inteiros("Escolha a opção: ", list(range(3)))
         return opcao
 

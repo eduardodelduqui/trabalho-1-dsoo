@@ -12,9 +12,9 @@ class TelaMain(Tela):
     def mostra_tela_opcoes(self):
         print("-------------- Aplicativo --------------")
         print('Entrar como:')
-        print('1 - Cliente')
-        print('2 - Loja')
-        print('3 - Pedido')
-        print('0 - Encerrar')
+        print('\033[1;36m1\033[0m - Cliente')
+        print('\033[1;36m2\033[0m - Loja')
+        print('\033[1;36m3\033[0m - Pedido')
+        print('\033[1;91m0\033[0m - Encerrar')
         opcao = self.verifica_valores.inteiros('Escolha a opção: ', list(range(4)))
         return opcao

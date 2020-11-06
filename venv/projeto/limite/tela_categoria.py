@@ -17,9 +17,9 @@ class TelaCategoria:
 
     def mostra_tela_opcoes(self, categorias):
         print("------ Categorias ------")
-        print("1 - Criar nova categoria")
+        print("\033[1;36m1\033[0m - Criar nova categoria")
         if categorias:
-            print("2 - Escolher categoria")
+            print("\033[1;36m2\033[0m - Escolher categoria")
             opcao = self.__verifica_valores.inteiros("Escolha a opção: ", list(range(3)))
         else:
             opcao = self.verifica_valores.inteiros("Escolha a opção: ", list(range(2)))
@@ -34,7 +34,6 @@ class TelaCategoria:
             print(t)
         else:
             print('\033[1;31m!!! Lista de categorias vazia !!!\033[0m')
-
 
     def escolhe_categoria(self, categorias):
         lista_id = self.cria_lista_id(categorias)
