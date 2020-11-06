@@ -1,4 +1,3 @@
-
 class VerificaValores:
     def __init__(self):
         pass
@@ -59,7 +58,7 @@ class VerificaValores:
             except ValueError:
                 print('Valor inválido, valor não pode ser um texto')
 
-    def cpf(self, mensagem: str = "", lista: list = None):
+    def cpf(self, mensagem: str = "", lista: list = []):
         while True:
             cpf = input(mensagem)
             soma = 0
@@ -98,13 +97,8 @@ class VerificaValores:
                     
                 if cpf.isdigit() and valido:
                     if len(lista) != 0:
-                        for cliente in lista:
-                            if cpf == cliente.cpf:
-                                print('CPF já cadastrado, insira outro CPF')
-                                break
-                            else:
-                                print(lista)
-                                return cpf
+                        if self.verifica_cpf(cpf, lista):
+                            return cpf
                     else:
                         return cpf
                     
@@ -116,6 +110,8 @@ class VerificaValores:
     def altera_cpf(self, mensagem: str = ""):
         while True:
             cpf = input(mensagem)
+            if cpf == "0":
+                return cpf
             soma = 0
             multiplicador = 10
             if cpf.isdigit():
@@ -157,10 +153,8 @@ class VerificaValores:
             
             else:
                 print('Valor inválido, insira apenas números')
-    
-   
-                    
-                
+        
+
     def cpf_tratado(self, cpf: str):
         cpf_tratado = ''
         for index, digito in enumerate(cpf):
@@ -171,5 +165,31 @@ class VerificaValores:
                 cpf_tratado += '-'
         return cpf_tratado
 
+    def verifica_cpf(self, cpf, lista):
+        for item in lista:
+            if cpf == item.cpf:
+                print('CPF já cadastrado, insira outro CPF')
+                return False
+        return True
 
+    def telefone(self, mensagem: str = ""):
+        while True:
+            try:
+                telefone = int(input(mensagem))
+                if len(str(telefone)) == 10 or len(str(telefone)) == 11:
+                    return telefone
+                else:
+                    print('Valor inválido, insira um número de telefone válido')
+            except ValueError:
+                print('Valor inválido, insira apenas números')
 
+    def telefone_tratado(self, telefone: int):
+        telefone_tratado = '('
+        telefone = str(telefone)
+        for index, digito in enumerate(telefone):
+            telefone_tratado += digito
+            if index == 1:
+                telefone_tratado += ')'
+            if index == 6:
+                telefone_tratado += '-'
+        return telefone_tratado
