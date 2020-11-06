@@ -24,6 +24,10 @@ class ControllerMain:
     def controller_categoria(self):
         return self.__controller_categoria
 
+    @property
+    def controller_pedido(self):
+        return self.__controller_pedido
+
     def inicializa_sistema(self):
         self.abre_tela_inicial()
 

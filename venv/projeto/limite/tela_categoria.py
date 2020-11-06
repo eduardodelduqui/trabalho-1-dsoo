@@ -5,26 +5,35 @@ class TelaCategoria:
     def __init__(self):
         self.__verifica_valores = VerificaValores()
 
+    @property
+    def verifica_valores(self):
+        return self.__verifica_valores
+
     def cria_lista_id(self, categorias: list):
-        lista_id = []
+        lista_id = [0]
         for categoria in categorias:
             lista_id.append(categoria.id)
         return lista_id
 
-    def mostra_tela_opcoes(self):
+    def mostra_tela_opcoes(self, categorias):
         print("------ Categorias ------")
-        print("1 - Escolher categoria")
-        print("2 - Criar nova categoria")
-        print("0 - Voltar")
-        opcao = self.__verifica_valores.inteiros("Escolha a opção: ", list(range(3)))
+        print("\033[1;36m1\033[0m - Criar nova categoria")
+        if categorias:
+            print("\033[1;36m2\033[0m - Escolher categoria")
+            opcao = self.__verifica_valores.inteiros("Escolha a opção: ", list(range(3)))
+        else:
+            opcao = self.verifica_valores.inteiros("Escolha a opção: ", list(range(2)))
         return opcao
 
     def imprime_lista(self, categorias):
-        print("------ Categorias ------")
-        t = PrettyTable(['ID', 'Nome'])
-        for categoria in categorias:
-            t.add_row([categoria.id, categoria.nome])
-        print(t)
+        if categorias:
+            print("------ Categorias ------")
+            t = PrettyTable(['ID', 'Nome'])
+            for categoria in categorias:
+                t.add_row([categoria.id, categoria.nome])
+            print(t)
+        else:
+            print('\033[1;31m!!! Lista de categorias vazia !!!\033[0m')
 
     def escolhe_categoria(self, categorias):
         lista_id = self.cria_lista_id(categorias)

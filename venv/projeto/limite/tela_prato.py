@@ -11,13 +11,15 @@ class TelaPrato:
             lista_id.append(prato.id)
         return lista_id
 
-    def mostra_tela_opcoes(self):
+    def mostra_tela_opcoes(self, pratos):
         print("-------------- Loja --------------")
         print('\033[1;36m1\033[0m - Adicionar prato')
-        print('\033[1;36m2\033[0m - Remover prato')
-        print('\033[1;36m3\033[0m - Alterar prato')
-        print('\033[1;36m4\033[0m - Listar pratos')
+        if pratos:
+            print('\033[1;36m2\033[0m - Remover prato')
+            print('\033[1;36m3\033[0m - Alterar prato')
+            print('\033[1;36m4\033[0m - Listar pratos')
         print('\033[1;91m0\033[0m - Voltar')
+
         opcao = self.__verifica_valores.inteiros('Escolha a opção: ', list(range(5)))
         return opcao
 
@@ -44,26 +46,31 @@ class TelaPrato:
         else:
             print('\033[1;31m!!! Lista de pratos vazia!!!\033[0m')
 
-
     def tela_alterar(self):
         print('------ Alterar ------')
-        print('1 - Nome')
-        print('2 - Tipo')
-        print('3 - Preço')
-        print('0 - Voltar')
+        print('\033[1;36m1\033[0m  - Nome')
+        print('\033[1;36m2\033[0m - Categoria')
+        print('\033[1;36m3\033[0m - Preço')
+        print('\033[1;91m0\033[0m - Voltar')
         opcao = self.__verifica_valores.inteiros('Digite a opção que deseja alterar: ')
-        if(opcao == 3):
-            valor = self.__verifica_valores.float('Alterar para: ')
-        else:
-            valor = self.__verifica_valores.texto('Alterar para: ')
-        return {
-            "opcao": opcao,
-            "valor": valor
-        }
+        return opcao
+
+    def altera_nome(self):
+        return self.__verifica_valores.texto('Alterar nome para: ')
+
+    def altera_preco(self):
+        return self.__verifica_valores.float('Alterar preço para: ')
+
+    def tela_altera_categoria(self):
+        print("------ Categorias ------")
+        print("\033[1;36m1\033[0m - Escolher categoria")
+        print("\033[1;36m2\033[0m - Criar nova categoria")
+        opcao = self.__verifica_valores.inteiros("Escolha a opção: ", list(range(3)))
+        return opcao
 
     def escolhe_prato(self, pratos):
         id_pratos = self.cria_lista_id(pratos)
-        return self.__verifica_valores.inteiros("Insira o ID do cliente [0 para voltar]: ", id_pratos, "Valor inválido, insira um ID válido")
+        return self.__verifica_valores.inteiros("Insira o ID do prato: ", id_pratos, "Valor inválido, insira um ID válido")
 
 
 

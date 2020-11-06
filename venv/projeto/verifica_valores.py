@@ -64,6 +64,7 @@ class VerificaValores:
             soma = 0
             multiplicador = 10
             if cpf.isdigit():
+
                 
                 #Validando digito verificador
                 valido = False
@@ -101,7 +102,7 @@ class VerificaValores:
                             return cpf
                     else:
                         return cpf
-                    
+                  
                 else: print('CPF inválido, insira um valor válido')
             
             else:
@@ -171,6 +172,7 @@ class VerificaValores:
                 print('CPF já cadastrado, insira outro CPF')
                 return False
         return True
+
 
     def telefone(self, mensagem: str = ""):
         while True:
