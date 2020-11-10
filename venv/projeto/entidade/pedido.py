@@ -1,13 +1,12 @@
 from entidade.categoria import Categoria
 from entidade.prato import Prato
 from entidade.cliente import Cliente
-from entidade.produto import Produto
 from datetime import datetime, date
 import shortuuid
 
 
 class Pedido:
-    def __init__(self, produto: Produto, qtd: int):
+    def __init__(self, prato: Prato, qtd: int):
         self.__codigo = shortuuid.uuid()
         self.__produtos = [{"item": produto, "qtd": qtd}]
         self.__cliente = None

@@ -9,7 +9,7 @@ class ControllerPedido(Controller):
         self.__pedidos = []
         self.__controle_principal = controle
         self.__tela_pedido = TelaPedido()
-        self.__pedido_em_andamento = ''
+        self.__pedido_em_andamento = None
 
     @property
     def pedidos(self):

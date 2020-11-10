@@ -1,4 +1,3 @@
-from entidade.produto import Produto
 from entidade.categoria import Categoria
 
 class Prato:
