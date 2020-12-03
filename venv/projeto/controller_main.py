@@ -7,7 +7,7 @@ from controle.controller_categoria import ControllerCategoria
 class ControllerMain:
     def __init__(self):
         self.__tela_main = TelaMain()
-        self.__controller_cliente = ControllerCliente()
+        self.__controller_cliente = ControllerCliente(self)
         self.__controller_prato = ControllerPrato(self)
         self.__controller_categoria = ControllerCategoria()
         self.__controller_pedido = ControllerPedido(self)
@@ -49,7 +49,6 @@ class ControllerMain:
                     2: self.prato,
                     3: self.pedido}
 
-        while True:
-            opcao = self.__tela_main.mostra_tela_opcoes()
-            funcao_escolhida = switcher[opcao]
-            funcao_escolhida()
+        opcao = self.__tela_main.mostra_tela_opcoes()
+        funcao_escolhida = switcher[opcao]
+        funcao_escolhida()

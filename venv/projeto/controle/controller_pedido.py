@@ -2,22 +2,23 @@ from entidade.pedido import Pedido
 from limite.tela_pedido import TelaPedido
 from datetime import datetime, date
 from controle.controller import Controller
+from persistencia.pedido_dao import PedidoDAO
 
 
 class ControllerPedido(Controller):
     def __init__(self, controle):
-        self.__pedidos = []
+        self.__pedido_dao = PedidoDAO()
         self.__controle_principal = controle
         self.__tela_pedido = TelaPedido()
         self.__pedido_em_andamento = None
 
     @property
     def pedidos(self):
-        return self.__pedidos
+        return self.__pedido_dao.get_all()
 
     @property
     def ultimo_pedido(self):
-        return self.__pedidos[-1]
+        return self.pedidos[-1]
 
     @property
     def pedido_em_andamento(self):
@@ -32,10 +33,10 @@ class ControllerPedido(Controller):
         self.__pedido_em_andamento = pedido
 
     def adiciona_pedido(self, pedido: Pedido):
-        self.__pedidos.append(pedido)
+        self.__pedido_dao.add(pedido)
 
     def remove_pedido(self, pedido: Pedido):
-        self.__pedidos.remove(pedido)
+        self.__pedidos_dao.remove(pedido)
 
     def imprime_lista_cliente(self):
         self.__controle_principal.controller_cliente.imprime_lista_cliente()
@@ -47,15 +48,15 @@ class ControllerPedido(Controller):
         self.__tela_pedido.imprime_pedido(pedido)
 
     def imprime_lista_pedidos(self):
-        if(self.__pedidos):
-            for pedido in self.__pedidos:
+        if(self.pedidos):
+            for pedido in self.pedidos:
                 self.imprime_pedido(pedido)
         else:
             self.imprime_pedido()
 
     def historico_pedidos(self):
         lista = []
-        for pedido in self.__pedidos:
+        for pedido in self.pedidos:
             if pedido.data == data_escolhida:
                 lista.append(pedido)
         if lista:
@@ -80,13 +81,16 @@ class ControllerPedido(Controller):
         self.lista_prato()
         if self.__controle_principal.controller_prato.pratos:
             lista_compras = self.__tela_pedido.escolhe_prato(self.__controle_principal.controller_prato.pratos)
-            for index, item in enumerate(lista_compras):
-                produto = self.__controle_principal.controller_prato.prato(item["id"])
-                quantidade = item["qtd"]
-                if index == 0:
-                    pedido = Pedido(produto, quantidade)
-                    continue
-                pedido.adiciona_produto(produto, quantidade)
+            # for index, item in enumerate(lista_compras):
+            #     produto = self.__controle_principal.controller_prato.prato(item["id"])
+            #     quantidade = item["qtd"]
+            #     if index == 0:
+            #         pedido = Pedido(produto, quantidade)
+            #         continue
+            #     pedido.adiciona_produto(produto, quantidade)
+            produto = self.__controle_principal.controller_prato.prato(lista_compras['item'])
+            print(produto)
+            pedido = Pedido(produto, lista_compras['quantidade'])
             self.pedido_em_andamento = pedido
             self.abre_tela_escolhe_cliente()
         else:
@@ -106,7 +110,7 @@ class ControllerPedido(Controller):
 
     def abre_tela_inicial(self):
         switcher = {
-            0: self.finaliza,
+            0: self.__controle_principal.abre_tela_inicial,
             1: self.escolhe_pedido,
             2: self.abre_tela_historico}
         opcao = self.__tela_pedido.mostra_tela_opcoes()
