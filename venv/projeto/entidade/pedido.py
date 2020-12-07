@@ -7,14 +7,12 @@ import shortuuid
 
 class Pedido:
     def __init__(self, prato: Prato, qtd: int):
-        self.__id = shortuuid.uuid()
-        self.__pratos = [{"item": prato, "qtd": qtd}]
-        self.__cliente = None
-        self.__valor_total = prato.preco_unitario*qtd
-        self.__data = date.today()
-        self.__horario = datetime.now().strftime("%H:%M:%S")
-        self.__pago = False
-        self.__valor_inicial = 0
+        if isinstance(prato, Prato) and isinstance(qtd, int):
+            self.__id = shortuuid.uuid()[:5]
+            self.__pratos = [{"item": prato, "qtd": qtd}]
+            self.__cliente = None
+            self.__data = date.today()
+            self.__horario = datetime.now().strftime("%H:%M:%S")
 
     @property
     def id(self):
@@ -37,12 +35,11 @@ class Pedido:
         return self.__horario
 
     @property
-    def pago(self):
-        return self.__pago
-
-    @property
     def valor_total(self):
-        return self.__valor_total
+        valor_total = 0
+        for prato in self.pratos:
+            valor_total += prato["item"].preco_unitario * prato["qtd"]
+        return valor_total
 
     def adiciona_cliente(self, cliente: Cliente):
         if isinstance(cliente, Cliente):
@@ -51,11 +48,3 @@ class Pedido:
     def adiciona_prato(self, prato: Prato, qtd: int = 1):
         compra = {"item": prato, "qtd": qtd}
         self.__pratos.append(compra)
-        self.calcula_preco_total()
-
-    def calcula_preco_total(self):
-        for prato in self.pratos:
-            self.__valor_total += prato["item"].preco_unitario*prato["qtd"]
-
-    def efetua_pagamento(self):
-        self.__pago = True

@@ -1,12 +1,11 @@
 from entidade.categoria import Categoria
+import shortuuid
 
 class Prato:
-    __global_id = 0
     def __init__(self, nome: str, categoria: Categoria, preco_unitario: float):
-        Prato.__global_id += 1
         self.__nome = nome
         self.__tipo = categoria
-        self.__id = Prato.__global_id
+        self.__id = shortuuid.uuid()[:6]
         self.__preco_unitario = preco_unitario
 
     @property

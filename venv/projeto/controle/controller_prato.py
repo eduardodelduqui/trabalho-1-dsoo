@@ -2,16 +2,17 @@ from entidade.prato import Prato
 from limite.tela_prato import TelaPrato
 from entidade.categoria import Categoria
 from controle.controller import Controller
+from persistencia.prato_dao import PratoDAO
 
 class ControllerPrato(Controller):
     def __init__(self, controle):
         self.__tela_prato = TelaPrato()
-        self.__pratos = []
+        self.__prato_dao = PratoDAO()
         self.__controle_principal = controle
 
     @property
     def pratos(self):
-        return self.__pratos
+        return self.__prato_dao.get_all()
 
     @property
     def tela_prato(self):
@@ -25,7 +26,7 @@ class ControllerPrato(Controller):
         opcao = self.__controle_principal.controller_categoria.tela_categoria.mostra_tela_opcoes(self.pratos)
         if opcao == 1: categoria_prato = self.adiciona_categoria()
         else: categoria_prato = self.escolhe_categoria()
-        self.__pratos.append(Prato(prato["nome"], categoria_prato, prato["preco"]))
+        self.__prato_dao.add(Prato(prato["nome"], categoria_prato, prato["preco"]))
 
     def escolhe_categoria(self):
         categoria_prato = self.__controle_principal.controller_categoria.escolhe_categoria()
@@ -39,9 +40,7 @@ class ControllerPrato(Controller):
         self.lista_prato()
         if self.pratos:
             id = self.__tela_prato.remove_prato()
-            for index, prato in enumerate(self.pratos):
-                if prato.id == id:
-                    self.__pratos.pop(index)
+            self.__prato_dao.remove(id)
 
     def altera_nome(self, id):
         valor = self.tela_prato.altera_nome()
@@ -92,7 +91,7 @@ class ControllerPrato(Controller):
             self.imprime_lista_prato()
             id_prato = self.__tela_prato.escolhe_prato(self.pratos)
             if id_prato != 0:
-                if self.__pratos:
+                if self.pratos:
                     switcher = {0: self.abre_tela_inicial,
                                 1: self.altera_nome,
                                 2: self.altera_tipo,

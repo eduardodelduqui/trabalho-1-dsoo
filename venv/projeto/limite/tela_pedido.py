@@ -10,55 +10,60 @@ class TelaPedido:
     def verifica_valores(self):
         return self.__verifica_valores
 
-    def pega_id_lista(self, pratos: list):
-        lista = []
-        for prato in pratos:
-            lista.append(prato.id)
-        return lista
+    def confirma_pedido(self, pedido):
+        pratos = pedido. pratos
+        layout = [
+            [sg.Text('Pedido', size= (43, 1), pad=(4, 4), font='Helvetica', justification='center')],
+            [sg.Text(f'COD. {pedido.id}')],
+            [sg.Text(f'DATA: {str(pedido.data)}'), sg.Text(f'HORARIO: {pedido.horario}')]
+        ]
 
-    def imprime_pedido(self, pedido):
-        if pedido:
-            pratos = pedido.pratos
-            t_pratos = PrettyTable(['ID', 'prato', 'Qtd.', 'Preço unitário' ], border=False)
-            for prato in pratos:
-                qtd = prato["qtd"]
-                prato = prato["item"]
-                t_pratos.add_row([prato.id, prato.nome, qtd, f'{prato.preco_unitario:.2f}'])
-            tabela = PrettyTable(['NOTA FISCAL'])
-            t_cod = PrettyTable(['COD. '], border=False, header=False)
-            t_cod.add_row(['COD. '+pedido.id])
-            t_header = PrettyTable(['DATA', 'HORARIO'], border=False, header=False)
-            t_header.add_row(['DATA: '+str(pedido.data), 'HORARIO: '+pedido.horario])
-            tabela.add_row([t_cod])
-            tabela.add_row([t_header])
-            if pedido.cliente:
-                cliente = pedido.cliente
-                t_cliente = PrettyTable(['ID', 'Nome', 'CPF'], border=False)
-                cliente_cpf = self.verifica_valores.cpf_tratado(cliente.cpf)
-                t_cliente.add_row([cliente.id, cliente.nome, cliente_cpf])
-                tabela.add_row(['----------- Cliente -----------'])
-                tabela.add_row([t_cliente])
-            else:
-                tabela.add_row(['Cliente não cadastrado'])
-            tabela.add_row(['------------ Itens ------------'])
-            tabela.add_row([t_pratos])
-            tabela.add_row(['-------------------------------'])
-            t_footer = PrettyTable(['VALOR TOTAL', 'PAGO'], header=False, border=False)
-            if pedido.pago:
-                pago = 'PAGO'
-            else: pago = 'A PAGAR'
-            t_footer.add_row(['Valor total: R$ '+f'{pedido.valor_total:.2f}', pago])
-            tabela.add_row([t_footer])
-            print(tabela)
+        if pedido.cliente:
+            layout.append([sg.Text(f'Cliente: {pedido.cliente.nome}', justification='center')])
+            layout.append([sg.Text(f'{pedido.cliente.cpf}')])
         else:
-            print('LISTA VAZIA')
+            layout.append([sg.Text(f'Cliente não cadastrado', justification='center')])
 
-    # def mostra_tela_opcoes(self):
-    #     print("------- Pedido -------")
-    #     print("\033[1;36m1\033[0m - Efetuar pedido")
-    #     print("\033[1;36m2\033[0m - Histórico de pedidos")
-    #     print("\033[1;91m0\033[0m - Voltar")
-    #     return self.__verifica_valores.inteiros("Escolha a opção: ", list(range(3)))
+        layout.append([sg.Text(f"{30*'-'} Itens {30*'-'}", size=(40, 1), justification='center')])
+
+        header = [sg.Text('Prato', size=(15, 1), pad=(1, 1), justification='center'),
+                  sg.Text('Qtd.', size=(10, 1), pad=(1, 1), justification='center'),
+                  sg.Text('Valor UN.', size=(8, 1), pad=(1, 1), justification='center'),
+                  sg.Text('Total item', size=(10, 1), pad=(1, 1), justification='center'),
+                  ]
+        layout.append(header)
+
+        for prato in pratos:
+            qtd = prato["qtd"]
+            item = prato["item"]
+            if qtd != 0:
+                prato_row = [
+                    sg.Text(f'{item.nome}', size=(15, 1), pad=(1, 1), justification='center'),
+                    sg.Text(f'{qtd}', size=(10, 1), pad=(1, 1), justification='center'),
+                    sg.Text(f'{item.preco_unitario:.2f}', size=(8, 1), pad=(1, 1), justification='center'),
+                    sg.Text(f'{item.preco_unitario*qtd:.2f}', size=(10, 1), pad=(1, 1), justification='center')
+                ]
+                layout.append(prato_row)
+        layout.append([sg.Text(f'Valor total: R$ {pedido.valor_total:.2f}')])
+        layout.append([sg.Submit('Confirmar'), sg.Cancel('Cancelar'), sg.Button('Alterar pedido')])
+
+
+        window = sg.Window('Clientes', element_justification='center',
+                           margins=(50, 50)).Layout(layout)
+        button, values = window.Read()
+
+        if button == 'Confirmar':
+            window.close()
+            return 1
+        if button == 'Alterar pedido':
+            window.close()
+            return 2
+        if button == 'Cancelar':
+            window.close()
+            return 3
+        if button == None:
+            window.close()
+            return 0
 
     def mostra_tela_opcoes(self):
         layout = [
@@ -83,44 +88,123 @@ class TelaPedido:
             window.close()
             return 2
 
-    def mostra_tela_historico(self):
-        print("------ Histórico ------")
-        print("\033[1;36m1\033[0m - Desde o início")
-        print("\033[1;36m2\033[0m - Últimos")
-        print("\033[1;91m0\033[0m - Voltar")
-        return self.__verifica_valores.inteiros("Escolha a opção: ", list(range(3)))
+    def lista_historico_pedido(self, pedidos):
+        header = [
+            sg.Text('ID', size=(6, 1), pad=(1, 1)), sg.Text('Nome', size=(30, 1), pad=(1, 1)),
+            sg.Text('Data', size=(8, 1), pad=(1, 1)), sg.Text('Horário', size=(8, 1), pad=(1, 1)),
+            sg.Text('Valor (R$)', size=(8, 1), pad=(1, 1))
+        ]
+        layout = []
+        layout.append(header)
+        for pedido in pedidos:
+            if pedido.cliente:
+                row = [sg.Text(f'{pedido.id}', background_color='white', size=(6, 1),
+                                 pad=(1, 1)),
+                       sg.Button(pedido.cliente.nome, size=(30, 1), button_color=('black', 'white'), border_width=0, pad=(1, 1), key=f'{pedido.id}'),
+                       sg.Text(pedido.data, size=(8, 1), background_color='white', pad=(1, 1)),
+                       sg.Text(pedido.horario, size=(8, 1), background_color='white', pad=(1, 1)),
+                       sg.Text(f'{pedido.valor_total:.2f}', size=(8, 1), background_color='white', pad=(1, 1), justification='center')
+                       ]
+            else:
+                row = [sg.Text(f'{pedido.id}', background_color='white', size=(6, 1),
+                                 pad=(1, 1)),
+                       sg.Button('Cliente não cadastrado', size=(30, 1), button_color=('black', 'white'), border_width=0, pad=(1, 1), key=f'{pedido.id}'),
+                       sg.Text(pedido.data, size=(8, 1), background_color='white', pad=(1, 1)),
+                       sg.Text(pedido.horario, size=(8, 1), background_color='white', pad=(1, 1)),
+                       sg.Text(f'{pedido.valor_total:.2f}', size=(8, 1), background_color='white', pad=(1, 1), justification='center')
+                       ]
+            layout.append(row)
+
+        window = sg.Window('Clientes', size=(640, 600), element_justification='center',
+                           margins=(50, 50)).Layout([[sg.Column(layout, size=(610, 400), scrollable=True)],[sg.Button('Voltar')]])
+        button, values = window.Read()
+
+        if button == 'Voltar' or button == None:
+            window.close()
+            return 0
+        else:
+            window.close()
+            return str(button)
+
+    def imprime_pedido(self, pedido):
+        pratos = pedido.pratos
+        layout = [
+            [sg.Text('Pedido', size=(43, 1), pad=(4, 4), font='Helvetica', justification='center')],
+            [sg.Text(f'COD. {pedido.id}')],
+            [sg.Text(f'DATA: {str(pedido.data)}'), sg.Text(f'HORARIO: {pedido.horario}')]
+        ]
+
+        if pedido.cliente:
+            layout.append([sg.Text(f'Cliente: {pedido.cliente.nome}', justification='center')])
+            layout.append([sg.Text(f'{pedido.cliente.cpf}')])
+        else:
+            layout.append([sg.Text(f'Cliente não cadastrado', justification='center')])
+
+        layout.append([sg.Text(f"{40*'-'} Itens {40*'-'}", size=(40, 1), justification='center')])
+
+        header = [sg.Text('Prato', size=(15, 1), pad=(1, 1), justification='center'),
+                  sg.Text('Qtd.', size=(10, 1), pad=(1, 1), justification='center'),
+                  sg.Text('Valor UN.', size=(8, 1), pad=(1, 1), justification='center'),
+                  sg.Text('Total item', size=(10, 1), pad=(1, 1), justification='center'),
+                  ]
+        layout.append(header)
+
+        for prato in pratos:
+            qtd = prato["qtd"]
+            item = prato["item"]
+            if qtd != 0:
+                prato_row = [
+                    sg.Text(f'{item.nome}', size=(15, 1), pad=(1, 1), justification='center'),
+                    sg.Text(f'{qtd}', size=(10, 1), pad=(1, 1), justification='center'),
+                    sg.Text(f'{item.preco_unitario:.2f}', size=(8, 1), pad=(1, 1), justification='center'),
+                    sg.Text(f'{item.preco_unitario * qtd:.2f}', size=(10, 1), pad=(1, 1), justification='center')
+                ]
+                layout.append(prato_row)
+        layout.append([sg.Text(f'Valor total: R$ {pedido.valor_total:.2f}')])
+        layout.append([sg.Button('Voltar')])
+
+        window = sg.Window('Clientes', element_justification='center',
+                           margins=(50, 50)).Layout(layout)
+        button, values = window.Read()
+
+        if button == 'Voltar' or button == None:
+            window.close()
+            return 0
 
     def mostra_tela_opcoes_cliente(self, clientes):
-        print("------ Adicionar Cliente ------")
-        print("\033[1;36m1\033[0m - Não adicionar cliente")
-        print("\033[1;36m2\033[0m - Cliente não cadastrado")
+        layout = [
+            [sg.Button('Não adicionar cliente', size=(25, 1), pad=(10, 10), font='Helvetica')],
+            [sg.Button('Cliente não cadastrado', size=(25, 1), pad=(10, 10), font='Helvetica')],
+        ]
         if clientes:
-            print("\033[1;36m3\033[0m - Cliente cadastrado")
-        print("\033[1;91m0\033[0m - Cancelar compra")
-        if clientes: return self.verifica_valores.inteiros("Escolha a opção: ", list(range(4)))
-        else: return self.__verifica_valores.inteiros("Escolha a opção: ", list(range(3)))
+            layout.append([sg.Button('Cliente cadastrado', size=(25, 1), pad=(10, 10), font='Helvetica')])
 
-    def confirma_pedido(self):
-        print("------ Confirmar Pedido ------")
-        print("\033[1;36m1\033[0m - Confirmar")
-        print("\033[1;36m2\033[0m - Alterar pedido")
-        print("\033[1;36m3\033[0m - Cancelar pedido")
-        print("\033[1;91m0\033[0m - Voltar")
-        return self.__verifica_valores.inteiros("Escolha a opçao: ", list(range(4)))
+        layout.append([sg.Button('Revisar compra', size=(25, 1), pad=(10, 10), font='Helvetica')])
+        layout.append([sg.Button('Cancelar compra', size=(25, 1), pad=(10, 10), font='Helvetica')])
 
-    # def escolhe_prato(self, pratos):
-    #     lista_compras = []
-    #     id_pratos = self.pega_id_lista(pratos)
-    #     while True:
-    #         id = input("Escolha o prato: ")
-    #         qtd = self.__verifica_valores.inteiros("Escolha a quantidade: ", list(range(99)), 'Valor inválido, não é possível comprar mais de 100 itens')
-    #         if qtd != 0:
-    #             compra = {"id": id, "qtd": qtd}
-    #             lista_compras.append(compra)
-    #         if self.__verifica_valores.sim_ou_nao("Deseja continuar a compra? [S/N]", ) == "n":
-    #             return lista_compras
+        window = sg.Window('Clientes', size=(400, 400), element_justification='center',
+                           margins=(50, 50)).Layout(layout)
 
-    def escolhe_prato(self, pratos):
+        button, values = window.Read()
+
+        if button == 'Não adicionar cliente':
+            window.close()
+            return 1
+        if button == 'Cliente não cadastrado':
+            window.close()
+            return 2
+        if button == 'Cliente cadastrado':
+            window.close()
+            return 3
+        if button == 'Revisar compra':
+            window.close()
+            return 4
+        if button == 'Cancelar compra' or button == None:
+            window.close()
+            return 0
+
+    def escolhe_prato(self, pratos, lista_compras):
+        total_compra = 0
         layout = [[sg.Text('Escolha o Prato', size=(30, 1), justification='center')]]
 
         header = [sg.Text('Nome', size=(15, 1), pad=(1, 1)),
@@ -138,35 +222,66 @@ class TelaPedido:
                    ]
             layout.append(row)
 
-        window = sg.Window('Lista Clientes').Layout(layout)
+        for index, prato in enumerate(lista_compras):
+            if prato["qtd"] != 0:
+                total_compra += prato['valor_total']
+                row = [
+                       sg.Text(prato["nome"], size=(15, 1), background_color='lightblue', pad=(1, 1)),
+                       sg.Text(prato["qtd"], size=(5, 1), background_color='lightblue', pad=(1, 1)),
+                        sg.Text(f"R$ {prato['valor_total']:.2f}", size=(10, 1), background_color='lightblue', pad=(1, 1)),
+                       ]
+                layout.append(row)
+
+        if lista_compras:
+            window = sg.Window('Lista Pratos', size=(320, 400)).Layout(
+                [[sg.Column(layout, size=(300, 300), scrollable=True)],
+                 [sg.Text('Total compra:'), sg.Text(f'R$ {total_compra:.2f}')],
+                 [sg.Submit('Confirmar'), sg.Cancel('Cancelar')]])
+        else:
+            window = sg.Window('Lista Pratos', size=(320, 400)).Layout(
+                [[sg.Column(layout, size=(300, 300), scrollable=True)],
+                 [sg.Submit('Confirmar', disabled=True), sg.Cancel('Cancelar')]])
+
         button, values = window.Read()
-        if button is None:
+        if button is None or button == 'Cancelar':
             window.close()
             return 0
+        if button == 'Confirmar':
+            window.close()
+            return 1
         else:
             quantidade = self.escolhe_quantidade()
-
-        return {
-            'item': button,
-            'quantidade': quantidade
-        }
+            window.close()
+            if quantidade != 0:
+                return {
+                    'id': button,
+                    'qtd': quantidade
+                }
+            else:
+                return {
+                    'id': button,
+                    'qtd': 0
+                }
 
     def escolhe_quantidade(self):
         layout = [
             [sg.Text('Escolha a quantidade')],
-            [sg.Text('Quantidade:', size=(10, 1)), sg.Input(key='quantidade' ,size=(3,1))],
+            [sg.Text('Quantidade:', size=(10, 1)), sg.Input(key='quantidade' ,size=(3,1), enable_events=True)],
             [sg.Submit('Confirmar'), sg.Cancel('Cancelar')]
         ]
 
         window = sg.Window('').Layout(layout)
-        button, values = window.Read()
-        if button == 'Confirmar':
-            return int(values['quantidade'])
-        else:
-            window.close()
+        while True:
+            event, values = window.Read()
+            if event == 'quantidade' and values['quantidade'] and values['quantidade'][-1] not in ('0123456789'):
+                window['quantidade'].update(values['quantidade'][:-1])
+            if event in (sg.WIN_CLOSED, 'Cancelar'):
+                window.close()
+                return 0
+            if event in ('Confirmar'):
+                window.close()
+                return int(values['quantidade'])
 
-    def escolhe_cliente(self, clientes):
-        id_clientes = self.pega_id_lista(clientes)
-        return self.__verifica_valores.inteiros("Escolha o cliente: ", id_clientes)
+
 
 

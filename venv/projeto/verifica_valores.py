@@ -59,20 +59,15 @@ class VerificaValores:
             except ValueError:
                 print('Valor inválido, valor não pode ser um texto')
 
-    def cpf(self, mensagem: str = "", lista: list = []):
-        while True:
-            cpf = input(mensagem)
-            if cpf.isdigit():
-                if len(cpf) == 11 and cpf.isdigit():
-                    if self.verifica_cpf(cpf, lista):
-                        return cpf
-                else: print('CPF inválido, insira um valor válido')
-            else:
-                print('Valor inválido, insira apenas números')
+    def cpf(self, cpf: int):
+        if cpf.isdigit() and len(cpf) == 11:
+            return True
+        else:
+            return False
 
     def cpf_tratado(self, cpf: str):
         cpf_tratado = ''
-        for index, digito in enumerate(cpf):
+        for index, digito in enumerate(str(cpf)):
             cpf_tratado += digito
             if index == 2 or index == 5:
                 cpf_tratado += '.'
@@ -80,23 +75,29 @@ class VerificaValores:
                 cpf_tratado += '-'
         return cpf_tratado
 
-    def verifica_cpf(self, cpf, lista):
-        for item in lista:
-            if cpf == item.cpf:
-                print('CPF já cadastrado, insira outro CPF')
-                return False
-        return True
+    def verifica_cpf(self, cpf_novo, clientes, cpf_antigo = None):
+        if cpf_novo == cpf_antigo:
+            return True
+        else:
+            for cliente in clientes:
+                if cliente.cpf == cpf_novo:
+                    return False
+            return True
 
-    def telefone(self, mensagem: str = ""):
-        while True:
-            try:
-                telefone = int(input(mensagem))
-                if len(str(telefone)) == 10 or len(str(telefone)) == 11:
-                    return telefone
-                else:
-                    print('Valor inválido, insira um número de telefone válido')
-            except ValueError:
-                print('Valor inválido, insira apenas números')
+    def telefone(self, telefone: int):
+        if len(telefone) == 10 or len(telefone) == 11:
+            return True
+        else:
+            return False
+
+    def verifica_telefone(self, telefone_novo: int, clientes, telefone_antigo = None):
+        if telefone_novo == telefone_antigo:
+            return True
+        else:
+            for cliente in clientes:
+                if cliente.telefone == telefone_novo:
+                    return False
+            return True
 
     def telefone_tratado(self, telefone: int):
         telefone_tratado = '('

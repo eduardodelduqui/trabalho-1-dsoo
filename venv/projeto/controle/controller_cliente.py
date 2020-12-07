@@ -23,15 +23,13 @@ class ControllerCliente(Controller):
     def controle_principal(self):
         return self.__controle_principal
 
-    def adiciona_cliente(self):
+    def adiciona_cliente(self, retorna = False):
         cliente = self.tela_cliente.opcoes_adicionar(self.clientes)
         if cliente != 0:
             self.__cliente_em_andamento = Cliente(cliente["nome"], cliente["cpf"], cliente["endereco"], cliente["telefone"])
             self.__cliente_dao.add(self.__cliente_em_andamento)
-        # if self.tela_cliente.tela_confirma():
-        #     self.__cliente_dao.add(self.__cliente_em_andamento)
-        # else:
-        #     self.__cliente_em_andamento = None
+            if retorna:
+                return self.__cliente_em_andamento
 
     def remove_cliente(self):
         cpf = self.tela_cliente.escolhe_cliente(self.clientes)
@@ -40,39 +38,11 @@ class ControllerCliente(Controller):
 
     def altera_cliente(self, cpf, valores):
         cliente = Cliente(valores["nome"], valores["cpf"], valores["endereco"], valores["telefone"])
-        print(cliente.nome)
-        self.__cliente_dao.add(cliente)
-        # for index, cliente in enumerate(self.clientes):
-        #     if (cliente.cpf == cpf):
-        #         cliente.nome = valores["nome"]
-        #         cliente.cpf = valores["cpf"]
-        #         cliente.endereco = valores["endereco"]
-        #         cliente.telefone = valores["telefone"]
-
-
-    def altera_nome(self, id):
-        valor = self.tela_cliente.tela_alterar_para(nome=True)
-        for index, cliente in enumerate(self.clientes):
-            if (cliente.id == id):
-                cliente.nome = valor
-
-    def altera_cpf(self, id):
-        valor = self.tela_cliente.tela_alterar_para(cpf=True)
-        for index, cliente in enumerate(self.clientes):
-            if cliente.id == id:
-                cliente.cpf = valor
-
-    def altera_endereco(self, id):
-        valor = self.tela_cliente.tela_alterar_para(endereco=True)
-        for index, cliente in enumerate(self.clientes):
-            if cliente.id == id:
-                cliente.endereco = valor
-
-    def altera_telefone(self, id):
-        valor = self.tela_cliente.tela_alterar_para(telefone=True)
-        for index, cliente in enumerate(self.clientes):
-            if cliente.id == id:
-                cliente.telefone = valor
+        if cliente != 0:
+            self.__cliente_dao.remove(cpf)
+            self.__cliente_dao.add(cliente)
+        else:
+            self.abre_tela_inicial()
 
     def imprime_lista_cliente(self):
         self.tela_cliente.imprime_lista_cliente(self.clientes)
@@ -86,7 +56,9 @@ class ControllerCliente(Controller):
                 return cliente
 
     def ultimo_cliente(self):
-        return self.__clientes[-1]
+        for index, cliente in enumerate(self.clientes):
+            if index == len(self.clientes)-1:
+                return cliente
 
     def busca_cliente(self):
         while True:
@@ -95,12 +67,8 @@ class ControllerCliente(Controller):
                 break
             self.imprime_cliente(self.cliente(id_cliente))
 
-    def escolhe_cliente_cpf(self):
-        while True:
-            cpf_cliente = self.tela_cliente.escolhe_cliente_cpf(self.clientes)
-            if cpf_cliente == 0:
-                break
-            self.imprime_cliente(self.cliente(cpf_cliente))
+    def escolhe_cliente(self):
+        return self.tela_cliente.escolhe_cliente(self.clientes)
 
     def confirma(self):
         return self.tela_cliente.tela_confirma()
@@ -110,30 +78,19 @@ class ControllerCliente(Controller):
                     1: self.adiciona_cliente,
                     2: self.remove_cliente,
                     3: self.abre_tela_altera,
-                    4: self.busca_cliente,
-                    5: self.imprime_lista_cliente}
+                    4: self.imprime_lista_cliente
+                    }
 
         while self.mantem_tela_aberta:
             opcao = self.tela_cliente.mostra_tela_opcoes(self.clientes)
             funcao_escolhida = switcher[opcao]()
 
-
-    # def abre_tela_altera(self):
-    #     self.imprime_lista_cliente()
-    #     id = self.tela_cliente.escolhe_cliente(self.clientes)
-    #     self.imprime_cliente(self.cliente(id))
-    #     switcher = {0: self.abre_tela_inicial,
-    #                     1: self.altera_nome,
-    #                     2: self.altera_cpf,
-    #                     3: self.altera_endereco,
-    #                     4: self.altera_telefone}
-    #
-    #     opcao = self.tela_cliente.tela_alterar_opcoes()
-    #     funcao_escolhida = switcher[opcao]
-    #     funcao_escolhida(id)
-
     def abre_tela_altera(self):
-        cpf = self.tela_cliente.escolhe_cliente(self.clientes)
-        if cpf != 0:
-            valores = self.tela_cliente.tela_alterar_opcoes(self.cliente(cpf))
-            self.altera_cliente(cpf, valores)
+        while True:
+            cpf = self.escolhe_cliente()
+            if cpf != 0:
+                valores = self.tela_cliente.tela_alterar_opcoes(self.cliente(cpf), self.clientes)
+                if valores != 0:
+                    self.altera_cliente(cpf, valores)
+            else:
+                self.abre_tela_inicial()
